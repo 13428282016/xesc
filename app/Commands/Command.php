@@ -1,4 +1,4 @@
-<?php namespace App\Commands;
+<?php namespace xesc\Commands;
 
 abstract class Command {
 

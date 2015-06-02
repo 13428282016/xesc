@@ -1,4 +1,4 @@
-<?php namespace App\Events;
+<?php namespace xesc\Events;
 
 abstract class Event {
 
