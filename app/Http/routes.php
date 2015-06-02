@@ -15,7 +15,10 @@ Route::get('/', 'IndexController@index');
 
 //Route::get('home', 'HomeController@index');
 
+// order
+Route::get('/order/confirm_order_view','OrderController@confirm_order_view');
 Route::post('/order/make_order', 'OrderController@make_order');
+
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

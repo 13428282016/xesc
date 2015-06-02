@@ -81,6 +81,7 @@
 				<span data-id="{{$i}}" class="add">+</span>
 			</div>
 		</div>
+
 	@endfor
 
 	{{--<div class="am-g dish">--}}
@@ -134,28 +135,28 @@
 
 		var data = [{
 			id:0,
-			price:10.00,
-			amount:0
+			name:"豆豉排骨",
+			price:10.00
 		},{
 			id:1,
-			price:11.00,
-			amount:0
+			name:"鱼香肉丝",
+			price:11.00
 		},{
 			id:2,
-			price:12.00,
-			amount:0
+			name:"青椒回锅肉",
+			price:12.00
 		},{
 			id:3,
-			price:13.00,
-			amount:0
+			name:"老干妈炒肉",
+			price:13.00
 		},{
 			id:4,
-			price:14.00,
-			amount:0
+			name:"辣椒炒牛肉",
+			price:14.00
 		},{
 			id:5,
-			price:15.00,
-			amount:0
+			name:"酸辣猪肚",
+			price:15.00
 		}];
 
 		var dishes = {
@@ -164,13 +165,14 @@
 			total_price:0.00,
 			o_total_amount:$(".shopping-cart .amount"),
 			o_total_price:$(".shopping-cart .price"),
+			carts_data:{},
 
 			init:function(){
 
 				var self = this;
 				$(".add").click(function(){
 					var id = $(this).data("id");
-					self.add_dishe(id);
+					self.add_dishes(id);
 				});
 
 				$('#payment_button').click(function(){
@@ -178,12 +180,26 @@
 				});
 
 			},
-			add_dishe:function(id){
+			add_dishes:function(id){
 
 				var dish_data = data[id];
 				this.total_amount ++;
 				this.total_price += dish_data["price"];
-				data[id]["amount"] ++ ;
+
+				this.o_total_price.html(this.total_price);
+				this.o_total_amount.html(this.total_amount);
+
+				var cart_dish = carts_data[id] || {id:id,name:dish_data["name"],price:0.00,amount:0};
+				cart_dish["price"] += dish_data["price"];
+				cart_dish["amount"] ++;
+				carts_data[id] = cart_dish;
+
+			},
+			minus_dishes:function(id){
+
+				var dish_data = data[id];
+				this.total_amount --;
+				this.total_price -= dish_data["price"];
 
 				this.o_total_price.html(this.total_price);
 				this.o_total_amount.html(this.total_amount);
