@@ -1,4 +1,4 @@
-<?php namespace App\Http\Controllers;
+<?php namespace xesc\Http\Controllers;
 
 class OrderController extends Controller {
 
