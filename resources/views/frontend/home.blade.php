@@ -62,7 +62,6 @@
 
 	@for ($i = 0; $i < 6; $i++)
 
-
 		<div id="{{$i}}" class="am-g dish">
 
 			<div class="am-u-sm-4">
@@ -84,24 +83,6 @@
 
 	@endfor
 
-	{{--<div class="am-g dish">--}}
-
-		{{--<div class="am-u-sm-4">--}}
-			{{--<img class="dish-image" width="100%" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg">--}}
-		{{--</div>--}}
-		{{--<div class="am-u-sm-8">--}}
-			{{--<div class="dish-name">--}}
-				{{--豆豉排骨--}}
-			{{--</div>--}}
-			{{--<div class="dish-sales">--}}
-				{{--月售：912--}}
-			{{--</div>--}}
-			{{--<div class="dish-price">--}}
-				{{--￥680.00--}}
-			{{--</div>--}}
-			{{--<span class="add">+</span>--}}
-		{{--</div>--}}
-	{{--</div>--}}
 </div>
 
 <div data-am-widget="navbar" class="am-navbar am-cf am-navbar-default "
@@ -120,7 +101,7 @@
 
 				<a class="am-btn am-btn-secondary" href="#" id="payment_button">
 					<i class="am-icon-shopping-cart " style="display: inline-block;vertical-align: bottom;"></i>
-					买单
+					选好了
 				</a>
 			</div>
 
@@ -128,10 +109,16 @@
 	</div>
 </div>
 
+<form id="confirm_order" action="/order/confirm_order_view" method="get" >
+
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input id="carts_data" type="hidden" name="carts_data" value="">
+
+</form>
 
 <script>
 
-	$(function() {
+//	$(function() {
 
 		var data = [{
 			id:0,
@@ -176,7 +163,7 @@
 				});
 
 				$('#payment_button').click(function(){
-					self.make_order();
+					self.confirm_order();
 				});
 
 			},
@@ -189,10 +176,10 @@
 				this.o_total_price.html(this.total_price);
 				this.o_total_amount.html(this.total_amount);
 
-				var cart_dish = carts_data[id] || {id:id,name:dish_data["name"],price:0.00,amount:0};
+				var cart_dish = this.carts_data[id] || {id:id,name:dish_data["name"],price:0.00,amount:0};
 				cart_dish["price"] += dish_data["price"];
 				cart_dish["amount"] ++;
-				carts_data[id] = cart_dish;
+				this.carts_data[id] = cart_dish;
 
 			},
 			minus_dishes:function(id){
@@ -205,12 +192,10 @@
 				this.o_total_amount.html(this.total_amount);
 
 			},
-			make_order:function() {
+			confirm_order:function() {
 
-				$.post('/order/make_order',{
-					data:{otal_amount:1},
-					_token:'{{ csrf_token() }}'
-				});
+				$('#carts_data').val(JSON.stringify(this.carts_data));
+				$('#confirm_order').submit();
 
 			}
 
@@ -219,7 +204,7 @@
 
 		dishes.init();
 
-	})
+//	})
 
 </script>
 

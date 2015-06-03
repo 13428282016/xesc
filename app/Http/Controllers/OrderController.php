@@ -1,5 +1,5 @@
 <?php namespace xesc\Http\Controllers;
-
+use Illuminate\Http\Request;
 class OrderController extends Controller {
 
 	/*
@@ -31,17 +31,18 @@ class OrderController extends Controller {
 	 */
 
 
-	public function confirm_order_view() {
+	public function confirm_order_view(Request $request) {
 
 
+		$carts_data = $request->input('carts_data');
 
-		view('frontend/confirm_order');
+		return view('frontend/confirm_order',['carts_data' => json_decode($carts_data,1)]);
 
 	}
 
 	public function make_order() {
 
-		echo "recived success";
+		echo "下单成功!";
 	}
 
 
