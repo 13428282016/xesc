@@ -23,4 +23,5 @@ Route::post('/order/make_order', 'OrderController@make_order');
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
+    'admin/auth'=>'Admin\AuthController'
 ]);

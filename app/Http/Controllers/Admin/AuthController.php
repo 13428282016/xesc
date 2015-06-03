@@ -30,7 +30,15 @@ class AuthController extends Controller {
     public  function  postLogin()
     {
 
+
     }
+
+    public function __construct()
+    {
+
+    }
+
+
 
 
 

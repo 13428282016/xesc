@@ -1,4 +1,4 @@
-@extends('layout.index')
+@extends('.........public.index')
 @extends('layout.index_header')
 @extends('layout.index_bottombar')
 @extends('layout.index_footer')

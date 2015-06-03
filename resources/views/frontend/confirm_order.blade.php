@@ -1,5 +1,5 @@
 
-@extends('layout.index')
+@extends('.........public.index')
 
 
 @section('content')
