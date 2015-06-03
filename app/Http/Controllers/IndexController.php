@@ -1,5 +1,7 @@
 <?php namespace xesc\Http\Controllers;
 
+use xesc\Dishes;
+
 class IndexController extends Controller {
 
 	/*

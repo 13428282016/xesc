@@ -26,7 +26,6 @@ class UserTable extends Migration {
             $table->integer('login_times')->unsigned();
             $table->timestamps();
             $table->softDeletes();
-
         });
 
 	}
