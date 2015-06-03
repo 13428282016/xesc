@@ -29,8 +29,6 @@ class UserTable extends Migration {
 
         });
 
-
-
 	}
 
 	/**

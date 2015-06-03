@@ -23,7 +23,11 @@ class OrderTable extends Migration {
             $table->dateTime('confirm_at');
             $table->timestamps();
             $table->softDeletes();
-            $table->decimal('freight',10,2)->unsigned();
+//            $table->decimal('freight',10,2)->unsigned();
+
+            $table->string('phone',12);
+            $table->string('address',255);
+
             $table->integer('buyer_id')->unsigned();
             $table->tinyInteger('status')->unsigned();
             $table->text('receiver_info');

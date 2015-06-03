@@ -15,8 +15,14 @@ class CartDishesTable extends Migration {
 	{
 		//
         Schema::create('cart_dishes_mid',function(Blueprint $table){
+
             $table->integer('dishes_id')->unsigned();
             $table->integer('cart_id')->unsigned();
+			$table->float('price');
+			$table->integer('amount');
+			$table->timestamps();
+
+
 
         });
 	}
