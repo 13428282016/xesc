@@ -25,3 +25,5 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
     'admin/auth'=>'Admin\AuthController'
 ]);
+
+Route::resource('admin/dishes','Admin\DishesController');
