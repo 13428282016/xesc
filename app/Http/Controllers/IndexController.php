@@ -32,7 +32,8 @@ class IndexController extends Controller {
 	 */
 	public function index()
 	{
-		return view('frontend/home');
+		$dishes = Dishes::all()->toArray();
+		return view('frontend/home',['dishes' => $dishes]);
 	}
 
 }

@@ -60,22 +60,24 @@
 
 <div class="am-container">
 
-	@for ($i = 0; $i < 6; $i++)
+	<input id="dish_data" type="hidden" value="{{json_encode($dishes)}}">
+
+	@for($i = 0;$i < count($dishes);$i++)
 
 		<div id="{{$i}}" class="am-g dish">
 
 			<div class="am-u-sm-4">
-				<img class="dish-image" width="100%" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg">
+				<img class="dish-image" width="100%" src="{{$dishes[$i]['image']}}">
 			</div>
 			<div class="am-u-sm-8">
 				<div class="dish-name">
-					豆豉排骨
+					{{$dishes[$i]['name']}}
 				</div>
 				<div class="dish-sales">
 					月售：912
 				</div>
 				<div class="dish-price">
-					￥{{$i + 10}}.00
+					￥{{$dishes[$i]['price']}}
 				</div>
 				<span data-id="{{$i}}" class="add">+</span>
 			</div>
@@ -116,95 +118,11 @@
 
 </form>
 
+<script src="{{asset('/js/frontend/index.js')}}"></script>
+
 <script>
 
-//	$(function() {
 
-		var data = [{
-			id:0,
-			name:"豆豉排骨",
-			price:10.00
-		},{
-			id:1,
-			name:"鱼香肉丝",
-			price:11.00
-		},{
-			id:2,
-			name:"青椒回锅肉",
-			price:12.00
-		},{
-			id:3,
-			name:"老干妈炒肉",
-			price:13.00
-		},{
-			id:4,
-			name:"辣椒炒牛肉",
-			price:14.00
-		},{
-			id:5,
-			name:"酸辣猪肚",
-			price:15.00
-		}];
-
-		var dishes = {
-
-			total_amount:0,
-			total_price:0.00,
-			o_total_amount:$(".shopping-cart .amount"),
-			o_total_price:$(".shopping-cart .price"),
-			carts_data:{},
-
-			init:function(){
-
-				var self = this;
-				$(".add").click(function(){
-					var id = $(this).data("id");
-					self.add_dishes(id);
-				});
-
-				$('#payment_button').click(function(){
-					self.confirm_order();
-				});
-
-			},
-			add_dishes:function(id){
-
-				var dish_data = data[id];
-				this.total_amount ++;
-				this.total_price += dish_data["price"];
-
-				this.o_total_price.html(this.total_price);
-				this.o_total_amount.html(this.total_amount);
-
-				var cart_dish = this.carts_data[id] || {id:id,name:dish_data["name"],price:0.00,amount:0};
-				cart_dish["price"] += dish_data["price"];
-				cart_dish["amount"] ++;
-				this.carts_data[id] = cart_dish;
-
-			},
-			minus_dishes:function(id){
-
-				var dish_data = data[id];
-				this.total_amount --;
-				this.total_price -= dish_data["price"];
-
-				this.o_total_price.html(this.total_price);
-				this.o_total_amount.html(this.total_amount);
-
-			},
-			confirm_order:function() {
-
-				$('#carts_data').val(JSON.stringify(this.carts_data));
-				$('#confirm_order').submit();
-
-			}
-
-
-		};
-
-		dishes.init();
-
-//	})
 
 </script>
 
