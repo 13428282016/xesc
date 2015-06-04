@@ -3,6 +3,7 @@ use Illuminate\Http\Request;
 use xesc\Orders;
 use xesc\Carts;
 use xesc\Dishes;
+use xesc\OrdersDishes;
 class OrderController extends Controller {
 
 	/*
@@ -34,7 +35,7 @@ class OrderController extends Controller {
 	 */
 
 
-	public function confirm_order_view(Request $request) {
+	public function getConfirmOrderView(Request $request) {
 
 
 		$carts_data = $request->input('carts_data');
@@ -43,18 +44,29 @@ class OrderController extends Controller {
 
 	}
 
-	public function make_order(Request $request) {
+	public function postMakeOrder(Request $request) {
 
 		$carts_data = json_decode($request->input('carts_data'));
 
+		$order = new Orders();
+		$order->address  = $request->input('address');
+		$order->phone    = $request->input('phone');
+		$order->pay_type = $request->input('pay_type');
+		$order->remark   = $request->input('remark');
+		$order->save();
 
-		dump($carts_data);
+		foreach ($carts_data as $dish_id => $cart_dish) {
 
-//		$order = new Orders();
-//		$order->save();
+				$orderdishes = new OrdersDishes();
+			    $orderdishes->order_id 		= $order->id;
+			    $orderdishes->dishes_amount = $cart_dish["amount"];
+			    $orderdishes->dishes_name   = $cart_dish["name"];
+			    $orderdishes->dishes_price  = $cart_dish["price"];
+			    $orderdishes->save();
 
+		}
 
-
+		return "下单成功";
 
 	}
 
