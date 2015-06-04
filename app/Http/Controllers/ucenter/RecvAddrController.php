@@ -1,9 +1,11 @@
 <?php namespace xesc\Http\Controllers\ucenter;
 
+use Illuminate\Support\Facades\Redirect;
 use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use xesc\RecvAddr;
 
 class RecvAddrController extends Controller {
 
@@ -15,6 +17,7 @@ class RecvAddrController extends Controller {
 	public function index()
 	{
 		//
+        return view('')->with('addrs',RecvAddr::all());
 	}
 
 
@@ -33,9 +36,12 @@ class RecvAddrController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
 		//
+
+
+
 	}
 
 	/**
@@ -43,9 +49,19 @@ class RecvAddrController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
 		//
+        $formData=$request->only(['address','cellphone','name','sex']);
+        $addr= new RecvAddr($formData);
+        if($addr->save())
+        {
+            return Redirect::to('ucenter/recvAddr');
+        }
+        else
+        {
+            return Redirect::to('ucnter/recvAddr')->withInput()->withError('添加失败');
+        }
 	}
 
 	/**
@@ -57,6 +73,7 @@ class RecvAddrController extends Controller {
 	public function show($id)
 	{
 		//
+        return view('')->with('addr',RecvAddr::find($id));
 	}
 
 	/**
@@ -68,6 +85,7 @@ class RecvAddrController extends Controller {
 	public function edit($id)
 	{
 		//
+        return view('')->with('addr',RecvAddr::find($id));
 	}
 
 	/**
@@ -76,9 +94,21 @@ class RecvAddrController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id,Request $request)
 	{
 		//
+        $formData=$request->only(['address','cellphone','name','sex']);
+        $formData['id']=$id;
+        $addr= new RecvAddr($formData);
+        if($addr->save())
+        {
+            return Redirect::to('ucenter/recvAddr');
+        }
+        else
+        {
+            return Redirect::to('')->withInput()->withError('编辑失败');
+        }
+
 	}
 
 	/**
@@ -90,6 +120,15 @@ class RecvAddrController extends Controller {
 	public function destroy($id)
 	{
 		//
+        $addr=RecvAddr::find($id);
+        if($addr->delete())
+        {
+
+        }
+        else
+        {
+
+        }
 	}
 
 }

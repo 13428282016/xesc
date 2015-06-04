@@ -29,4 +29,8 @@ Route::controllers([
 	'address' => 'ucenter\RecvAddrController'
 ]);
 
-Route::resource('admin/dishes','Admin\DishesController');
+Route::resources([
+    'admin/dishes'=>'Admin\DishesController',
+     'recvaddr'=>'ucenter\RecvAddrController'
+    ]
+);

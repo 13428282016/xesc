@@ -4,6 +4,7 @@ use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use xesc\Orders;
 
 class OrderController extends Controller {
 
@@ -12,9 +13,13 @@ class OrderController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		//
+        $args=$request->only(['open_id','addr_id']);
+        $user=User::where('open_id',$args['open_id'])->get()->first();
+        $orders=$user->orders;
+        return view('')->with('orders',$orders);
 	}
 
 	/**
@@ -22,9 +27,22 @@ class OrderController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
 		//
+        $args=$request->only(['open_id','addr_id']);
+        $user=User::where('open_id',$args['open_id'])->get()->first();
+        $cart=$user->cart;
+        if($args['addr_id'])
+        {
+            $defaultAddr=$user->recvAddrs()->where('id',$args['addr_id']);
+        }
+        else
+        {
+            $defaultAddr=$user->recvAddrs()->where('is_default',true);
+        }
+
+        return view('',['default_addr'=>$defaultAddr,'dishes'=>$cart->dishes]);
 	}
 
 	/**
@@ -32,9 +50,17 @@ class OrderController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
 		//
+        $args= $request->only(['addr_id']);
+        $args=$request->only(['open_id','addr_id']);
+        $user=User::where('open_id',$args['open_id'])->get()->first();
+        $cart=$user->cart;
+        
+
+
+
 	}
 
 	/**
