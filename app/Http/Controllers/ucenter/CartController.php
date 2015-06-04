@@ -10,12 +10,10 @@ use xesc\User;
 
 class CartController extends Controller {
 
-	public  function  getIncreaseDishes(Request $request)
+	public  function  postIncreaseDishes(Request $request)
     {
 
         $cartItem=$request->only(['dishes_id','open_id']);
-        $cartItem['dishes_id']=3;
-        $cartItem['open_id']=1;
         $user=User::where('open_id',$cartItem['open_id'])->get()->first();
         $cart=$user->cart;
 
@@ -34,11 +32,9 @@ class CartController extends Controller {
 
 
     }
-    public  function  getDecreaseDishes(Request $request)
+    public  function  postDecreaseDishes(Request $request)
     {
         $cartItem=$request->only(['dishes_id','open_id']);
-        $cartItem['dishes_id']=3;
-        $cartItem['open_id']=1;
         $user=User::where('open_id',$cartItem['open_id'])->get()->first();
         $cart=$user->cart;
         $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();
@@ -52,20 +48,17 @@ class CartController extends Controller {
 
 
     }
-    public  function  getRemoveDishes(Request $request)
+    public  function  postRemoveDishes(Request $request)
     {
         $cartItem=$request->only(['dishes_id','open_id']);
-        $cartItem['dishes_id']=1;
-        $cartItem['open_id']=1;
         $user=User::where('open_id',$cartItem['open_id'])->get()->first();
         $cart=$user->cart;
         $cart->dishes()->detach($cartItem['dishes_id']);
 
     }
-    public  function getClear()
+    public  function postClear(Request $request)
     {
-        $cartItem['dishes_id']=1;
-        $cartItem['open_id']=1;
+        $cartItem=$request->only(['open_id']);
         $user=User::where('open_id',$cartItem['open_id'])->get()->first();
         $cart=$user->cart;
         $cart->dishes()->detach();
