@@ -6,10 +6,6 @@
 
 <style>
 
-	body {
-		background: url('{{asset('/image/frontend/index_background_img.png')}}') repeat ;
-	}
-
 	div.am-container>.dish{
 		padding: 5px 0px;
 		margin: 10px 0px;
@@ -71,9 +67,8 @@
 
 	/** 底部 **/
 	.am-navbar  {
-		background: url('{{asset('/image/frontend/index_bottombar_bg.png')}}') no-repeat center  ;
-		background-clip: content-box;
-		background-size: auto 105%;
+		{{--background: url('{{asset('/image/frontend/index_bottombar_bg.png')}}') no-repeat center  ;--}}
+		{{--background-size: auto 150%;--}}
 	}
 
 	{{--.am-navbar .am-navbar-nav {--}}
@@ -138,19 +133,20 @@
 
 </div>
 
-<div data-am-widget="navbar" class="am-navbar am-cf " id="">
+<!-- 底栏 -->
+<div data-am-widget="navbar" class="am-navbar am-cf " id="" style="z-index: 1009">
 	<div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
 
 		<div class="am-g">
 
+			<!-- 总价钱 -->
 			<div class="am-u-sm-6 shopping-cart">
 				 <span class="dish-price" >￥0</span>
 			</div>
 
-
+			<!-- 底部 所点的餐品份数 -->
 			<div class="dish-count" align="center">
-				<span class="value"> <img class="cart" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}"></span>
-
+				<span class="value"><span class="total-amount"></span><img class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}"></span>
 			</div>
 
 			<div class="am-u-sm-6">
@@ -159,9 +155,15 @@
 					选好了
 				</a>
 			</div>
-
+			<div class="background" style="  position: absolute;
+  width: 100%;
+  z-index: -1;">
+				<img style="width: 100%" src="{{asset('/image/frontend/index_bottombar_bg.png')}}">
+			</div>
 		</div>
+
 	</div>
+
 </div>
 
 <form id="confirm_order" action="/order/confirm-order-view" method="get" >

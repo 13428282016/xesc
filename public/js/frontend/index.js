@@ -66,9 +66,14 @@ $(function() {
 
             var dish_data = data[index];
             this.total_amount ++;
+            if (this.total_amount == 1) {
+                $(".dish-count .value .cart-icon").css({'display':'none'})
+            }
             this.total_price += parseFloat(dish_data["price"]);
 
+            $(".dish-count .value .total-amount").html(this.total_amount);
             this.o_total_price.html("￥"+this.total_price);
+
 
             var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],price:0.00,amount:0};
             cart_dish["price"] += parseFloat(dish_data["price"]);
@@ -81,8 +86,15 @@ $(function() {
 
             var dish_data = data[index];
             this.total_amount --;
-            this.total_price -= parseFloat(dish_data["price"]);
 
+            if (this.total_amount == 0) {
+                $(".dish-count .value .total-amount").html("");
+                $(".dish-count .value .cart-icon").css({'display':'inline'})
+            } else {
+                $(".dish-count .value .total-amount").html(this.total_amount);
+            }
+
+            this.total_price -= parseFloat(dish_data["price"]);
             this.o_total_price.html("￥"+this.total_price);
 
             var cart_dish = this.carts_data[index];

@@ -1,61 +1,29 @@
 
 @extends('layout.index')
-@extends('layout.header')
 
 
 @section('content')
 
 <style>
 
+    body {
+        background-color: #eeeeee;
+    }
     .dish {
         padding: 5px 0px;
+        border-bottom: 1px solid #e0e0e0;
     }
-
-    .am-container {
+    .dish .am-g {
     }
-
-    .am-container>.am-g {
+    .am-g {
         background-color: #ffffff;
+    }
+    .am-header {
         margin-bottom: 10px;
-        margin-left: 0px;
-        margin-right: 0px;
-        -webkit-border-radius: 15px;
-        -moz-border-radius: 15px;
-        border-radius: 15px;
-
     }
-
-
-    /* 地址部分 */
-
-    .am-container .address {
-        height: 70px;
+    .am-container {
+        border-top: 1px solid #e0e0e0;
     }
-
-    .am-container .address>div {
-        display: inline-block;
-    }
-
-    .am-container .address .address-details {
-        color: #333333;
-        font-size: 1.2em;
-    }
-
-    .am-container .address-icon {
-        margin-left: 10px;
-        line-height: 70px;
-        width: 25px;
-    }
-
-    .am-container .address .right-arrow {
-
-        float: right;
-        margin-right: 15px;
-        line-height: 70px;
-    }
-
-
-    /* */
     .make-order-btn {
         margin-top: 20px;
     }
@@ -81,30 +49,21 @@
 
 </style>
 
+<header data-am-widget="header" class="am-header am-header-default">
+    <div class="am-header-left am-header-nav">
+        <a id="back"  class="" style="cursor: pointer" onclick="history.go(-1)">
+            返回
+        </a>
 
+    </div>
+    <h1 class="am-header-title">
+        <a href="#title-link" class="">确认餐品</a>
+    </h1>
+
+</header>
 
 <div class="am-container">
 
-    <div class="am-g">
-        <a href="/address/add-address-view">
-            <div class="address">
-
-                <div class="address-icon">
-                    <img width="25" src="{{asset('/image/frontend/siderbar_myaddresses.png')}}">
-                </div>
-                <div class="address-details" style="  padding-left: 25%;">
-                    <div class="no-addresses-notes">
-                        请添加地址
-                    </div>
-                </div>
-
-                <span class="right-arrow"> <img width="9" src="{{asset('/image/frontend/orderconfirm_right_gray_arrow.png')}}"></span>
-
-            </div>
-        </a>
-    </div>
-
-    <div class="am-g">
     @foreach ($carts_data as $dishes)
 
         <div id="{{$dishes['id']}}" class="am-g dish">
@@ -134,7 +93,6 @@
         </div>
 
     @endforeach
-    </div>
 
     <form method="post" id="make_order_form" action="/order/make_order" style="">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">

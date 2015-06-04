@@ -40,7 +40,7 @@ class OrderController extends Controller {
 
 		$carts_data = $request->input('carts_data');
 
-		return view('frontend/confirm_order',['carts_data' => json_decode($carts_data,1)]);
+		return view('frontend/confirm_order',['carts_data' => json_decode($carts_data,1),'title' => '订单确认']);
 
 	}
 
