@@ -1,5 +1,5 @@
 
-@extends('.........public.index')
+@extends('layout.index')
 
 
 @section('content')
@@ -9,27 +9,21 @@
     body {
         background-color: #eeeeee;
     }
-
     .dish {
         padding: 5px 0px;
         border-bottom: 1px solid #e0e0e0;
     }
-
     .dish .am-g {
     }
-
     .am-g {
         background-color: #ffffff;
     }
-
     .am-header {
         margin-bottom: 10px;
     }
-
     .am-container {
         border-top: 1px solid #e0e0e0;
     }
-
     .make-order-btn {
         margin-top: 20px;
     }
@@ -37,22 +31,18 @@
         margin-top: 20px;
         border-top: 1px solid #e0e0e0;
     }
-
     .details .am-g {
         border-bottom: 1px solid #e0e0e0;
     }
-
     .details .am-g .am-form-field {
         padding-left: 1rem;
         padding-right: 1rem;
         border: 0px;
     }
-
     .dish-price {
         padding: 0px;
         text-align: left;
     }
-
     form {
         padding: 0px;
     }
@@ -113,11 +103,14 @@
                 <input type="text" name="address" class="am-form-field am-radius" placeholder="地址" />
             </div>
             <div class="am-g">
-                <input type="text" name="phone" class="am-form-field am-radius" placeholder="手机/电话号码" />
+                <input type="text" name="phone"   class="am-form-field am-radius" placeholder="手机/电话号码" />
+            </div>
+            <div class="am-g">
+                <input type="text" name="remark"  class="am-form-field am-radius" placeholder="备注" />
             </div>
 
             <div class="am-g">
-                <input type="hidden" name="payment_ways" value="1">
+                <input type="hidden" name="pay_type" value="1">
                 <div class="am-form-field  payment-ways">餐到付款</div>
             </div>
 

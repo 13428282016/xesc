@@ -1,9 +1,17 @@
 @section("header")
 
-    <header data-am-widget="header" class="am-header am-header-default">
+
+    <style>
+        .am-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #fd4548;
+        }
+    </style>
+
+    <header data-am-widget="header" class="am-header am-header-fixed">
         <div class="am-header-left am-header-nav">
             <a href="#left-link" class="">
-                <i class="am-header-icon am-icon-home"></i>
+                <i class="am-header-icon am-icon-home" style="font-size: 25px"></i>
             </a>
         </div>
         <h1 class="am-header-title">
@@ -11,7 +19,7 @@
         </h1>
         <div class="am-header-right am-header-nav">
             <a href="#right-link" class="">
-                <i class="am-header-icon am-icon-bars"></i>
+                <img src="{{asset('/image/frontend/dish_person.png')}}" style="height: 25px" alt=""/>
             </a>
         </div>
     </header>
