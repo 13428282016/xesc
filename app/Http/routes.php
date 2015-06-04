@@ -24,7 +24,8 @@ Route::controllers([
 	'order'=> 'OrderController',
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
-    'admin/auth'=>'Admin\AuthController'
+    'admin/auth'=>'Admin\AuthController',
+    'cart'=>'ucenter\CartController'
 ]);
 
 Route::resource('admin/dishes','Admin\DishesController');

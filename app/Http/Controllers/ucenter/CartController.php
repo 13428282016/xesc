@@ -1,84 +1,76 @@
-<?php namespace xesc\Http\Controllers;
+<?php namespace xesc\Http\Controllers\ucenter;
 
+use DB;
+use xesc\Cart;
 use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use xesc\User;
 
 class CartController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		//
-	}
+	public  function  getIncreaseDishes(Request $request)
+    {
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
-	public function create()
-	{
-		//
-	}
+        $cartItem=$request->only(['dishes_id','open_id']);
+        $cartItem['dishes_id']=3;
+        $cartItem['open_id']=1;
+        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cart=$user->cart;
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
-	public function store()
-	{
-		//
-	}
+        $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();
+        if(count($cartDishes))
+        {
+            $cart->dishes()->updateExistingPivot($cartDishes[0]->dishes_id,['amount'=>$cartDishes[0]->amount+1]);
+        }
+        else
+        {
+            $cart->dishes()->attach($cartItem['dishes_id'],['amount'=>1]);
+        }
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function edit($id)
-	{
-		//
-	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function update($id)
-	{
-		//
-	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function destroy($id)
-	{
-		//
-	}
+
+    }
+    public  function  getDecreaseDishes(Request $request)
+    {
+        $cartItem=$request->only(['dishes_id','open_id']);
+        $cartItem['dishes_id']=3;
+        $cartItem['open_id']=1;
+        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cart=$user->cart;
+        $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();
+        if(count($cartDishes))
+        {
+            if($cartDishes[0]->amount>1)
+            $cart->dishes()->updateExistingPivot(   $cartItem['dishes_id'],['amount'=>$cartDishes[0]->amount-1]);
+            else
+                $cart->dishes()->detach($cartItem['dishes_id']);
+        }
+
+
+    }
+    public  function  getRemoveDishes(Request $request)
+    {
+        $cartItem=$request->only(['dishes_id','open_id']);
+        $cartItem['dishes_id']=1;
+        $cartItem['open_id']=1;
+        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cart=$user->cart;
+        $cart->dishes()->detach($cartItem['dishes_id']);
+
+    }
+    public  function getClear()
+    {
+        $cartItem['dishes_id']=1;
+        $cartItem['open_id']=1;
+        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cart=$user->cart;
+        $cart->dishes()->detach();
+    }
+
+
 
 }

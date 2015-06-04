@@ -11,4 +11,10 @@ class Dishes extends Model {
 
     use SoftDeletes;
     protected $table = 'dishes';
+    public function  carts()
+    {
+        return $this->belongsToMany('xesc\cart','cart_dishes_mid');
+    }
+
+
 }
