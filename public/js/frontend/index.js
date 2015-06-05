@@ -80,6 +80,12 @@ $(function() {
             cart_dish["amount"] ++;
             this.carts_data[index] = cart_dish;
 
+            $.post('/cart/increase-dishes',{
+                'dishes_id':cart_dish['id'],
+                'open_id':1,
+                '_token':$('#csrf_totken').val()
+            });
+
         },
         // 减一份菜
         minus_dishes:function(index){
@@ -105,6 +111,11 @@ $(function() {
             } else {
                 this.carts_data[index] = cart_dish;
             }
+            $.post('/cart/decrease-dishes',{
+                'dishes_id':cart_dish['id'],
+                'open_id':1,
+                '_token':$('#csrf_totken').val()
+            });
 
         },
         confirm_order:function() {

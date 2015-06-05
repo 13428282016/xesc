@@ -168,7 +168,7 @@
 
 <form id="confirm_order" action="/order/confirm-order-view" method="get" >
 
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+	<input id="csrf_totken" type="hidden" name="_token" value="{{ csrf_token() }}">
 	<input id="carts_data" type="hidden" name="carts_data" value="">
 
 </form>

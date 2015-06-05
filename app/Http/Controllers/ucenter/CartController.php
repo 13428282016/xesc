@@ -16,15 +16,14 @@ class CartController extends Controller {
         $cartItem=$request->only(['dishes_id']);
         $user=$request->session()->get('user');
         $cart=$user->cart;
-
-        $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();
+        $cartDishes=$cart->dishes()->where('dishes_id',$cartItem['dishes_id'])->get();
         if(count($cartDishes))
         {
-            $cart->dishes()->updateExistingPivot($cartDishes[0]->dishes_id,['amount'=>$cartDishes[0]->amount+1]);
+            $cart->dishes()->updateExistingPivot($cartItem['dishes_id'],['dishes_amount'=>$cartDishes->first()->pivot->dishes_amount+1]);
         }
         else
         {
-            $cart->dishes()->attach($cartItem['dishes_id'],['amount'=>1]);
+            $cart->dishes()->attach($cartItem['dishes_id'],['dishes_amount'=>1]);
         }
 
 
@@ -34,14 +33,14 @@ class CartController extends Controller {
     }
     public  function  postDecreaseDishes(Request $request)
     {
-        $cartItem=$request->only(['dishes_id','open_id']);
-        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cartItem=$request->only(['dishes_id']);
+        $user=$request->session()->get('user');
         $cart=$user->cart;
-        $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();
-        if(count($cartDishes))
+        $cartDishes=$cart->dishes()->where('dishes_id',$cartItem['dishes_id'])->get()->first();
+        if($cartDishes)
         {
-            if($cartDishes[0]->amount>1)
-            $cart->dishes()->updateExistingPivot(   $cartItem['dishes_id'],['amount'=>$cartDishes[0]->amount-1]);
+            if($cartDishes->pivot->dishes_amount>1)
+                $cart->dishes()->updateExistingPivot($cartItem['dishes_id'],['dishes_amount'=>$cartDishes->pivot->dishes_amount-1]);
             else
                 $cart->dishes()->detach($cartItem['dishes_id']);
         }
@@ -50,16 +49,16 @@ class CartController extends Controller {
     }
     public  function  postRemoveDishes(Request $request)
     {
-        $cartItem=$request->only(['dishes_id','open_id']);
-        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cartItem=$request->only(['dishes_id']);
+        $user=$request->session()->get('user');
         $cart=$user->cart;
         $cart->dishes()->detach($cartItem['dishes_id']);
 
     }
     public  function postClear(Request $request)
     {
-        $cartItem=$request->only(['open_id']);
-        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cartItem=$request->only(['dishes_id']);
+        $user=$request->session()->get('user');
         $cart=$user->cart;
         $cart->dishes()->detach();
     }

@@ -10,7 +10,7 @@ class Cart extends Model {
 
     public  function  dishes()
     {
-        return $this->belongsToMany('xesc\dishes','cart_dishes_mid');
+        return $this->belongsToMany('xesc\dishes','cart_dishes_mid')->withPivot('dishes_amount');
     }
     public  function  user()
     {
