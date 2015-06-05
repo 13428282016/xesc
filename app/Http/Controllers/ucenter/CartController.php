@@ -13,8 +13,8 @@ class CartController extends Controller {
 	public  function  postIncreaseDishes(Request $request)
     {
 
-        $cartItem=$request->only(['dishes_id','open_id']);
-        $user=User::where('open_id',$cartItem['open_id'])->get()->first();
+        $cartItem=$request->only(['dishes_id']);
+        $user=$request->session()->get('user');
         $cart=$user->cart;
 
         $cartDishes=DB::table('cart_dishes_mid')->where('dishes_id',$cartItem['dishes_id'])->where('cart_id',$cart->id)->get();

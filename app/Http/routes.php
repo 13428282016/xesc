@@ -45,7 +45,6 @@ Route::group(['middleware'=>'openID'],function(){
     Route::resources([
 
             'recvaddr'=>'ucenter\RecvAddrController',
-
             'order'=>'ucenter\OrderController',
 
         ]
