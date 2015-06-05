@@ -29,8 +29,30 @@ Route::controllers([
 	'address' => 'ucenter\RecvAddrController'
 ]);
 
-Route::resources([
-    'admin/dishes'=>'Admin\DishesController',
-     'recvaddr'=>'ucenter\RecvAddrController'
-    ]
-);
+
+
+Route::group(['middleware'=>'admin'],function(){
+    Route::resources([
+            'admin/dishes'=>'Admin\DishesController',
+            'admin/order'=>'Admin\OrderController',
+            'admin/user'=>'Admin\UserController'
+        ]
+    );
+
+});
+
+Route::group(['middleware'=>'openID'],function(){
+    Route::resources([
+
+            'recvaddr'=>'ucenter\RecvAddrController',
+
+            'order'=>'ucenter\OrderController',
+
+        ]
+    );
+    Route::controllers([
+       'order'=>'ucenter\OrderController',
+        'cart'=>'ucenter\CartController',
+    ]);
+
+});

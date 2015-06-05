@@ -1,4 +1,4 @@
-<?php namespace xesc\Http\Controllers;
+<?php namespace xesc\Http\Controllers\ucenter;
 
 use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;

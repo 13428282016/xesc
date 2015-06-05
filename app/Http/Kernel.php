@@ -27,6 +27,8 @@ class Kernel extends HttpKernel {
 		'auth' => 'xesc\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'xesc\Http\Middleware\RedirectIfAuthenticated',
+        'admin'=>'xesc\Http\Middleware\Admin',
+        'openID'=>'xesc\Http\Middleware\OpenID'
 	];
 
 }
