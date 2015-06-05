@@ -67,24 +67,6 @@
         label.checked {
             background: url('../image/frontend/address_radio_checked.png') no-repeat left ;
         }
-
-
-        .am-navbar .am-navbar-nav div.dish-count {
-            position: absolute;
-            top: -21px;
-            width: 100%;
-        }
-        .am-navbar .am-navbar-nav div.dish-count .value {
-            background: url('{{asset('/image/frontend/index_bottombar_count_bg.png')}}') no-repeat center  ;
-            background-size: auto 100%;
-            width: 39px;
-            height: 39px;
-            display: block;
-            color: #ffffff;
-            line-height: 39px;
-
-        }
-
         .am-navbar .am-navbar-nav .am-btn {
             color: #ffffff;
         }
@@ -129,7 +111,7 @@
     <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
         <div class="am-g">
             <div class="am-u-sm-12">
-                <a class="am-btn"  id="payment_button" style="  line-height: 35px;">
+                <a class="am-btn"  id="add_addresses_btn" style="  line-height: 35px;">
                     确 定
                 </a>
             </div>
