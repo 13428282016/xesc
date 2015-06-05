@@ -21,6 +21,23 @@ class RecvAddrController extends Controller {
 	}
 
 
+	public function getAddressesView()
+	{
+		$addressinfos = array(array(
+			'id' => '1',
+			'name' => '西瓜',
+			'cellphone' => '18812341234',
+			'address' => '广东省广州市荔湾区动感小西瓜文昌楼4楼A区'
+		),array(
+			'id' => '2',
+			'name' => '西瓜',
+			'cellphone' => '18812341234',
+			'address' => '广东省广州市荔湾区动感小西瓜文昌楼4楼A区'
+		),);
+
+		return view('frontend/address',['title' => '送餐地址','addressinfos' => $addressinfos]);
+	}
+
 	public function getAddAddressView()
 	{
 

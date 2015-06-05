@@ -7,8 +7,18 @@
 
 <style>
 
-    .dish {
-        padding: 5px 0px;
+    .dishes {
+        padding: 0px 10px;
+        font-family: arial;
+    }
+
+    .dish ~.dish {
+        border-top: 1px solid #e0e0e0;
+        margin: 0px;
+    }
+
+    .am-u-sm-8 {
+        padding: 0px;
     }
 
     .am-container {
@@ -79,6 +89,48 @@
         padding: 0px;
     }
 
+    /* 备注 */
+    .remark {
+        padding-left: 10px;
+    }
+    .remark input{
+       height: 45px;
+        width: 80%;
+
+    }
+
+    /* 支付方式 */
+    .payment-ways {
+        padding: 0px 10px;
+    }
+    .payment-ways >div,.dish {
+        height: 45px;
+        line-height: 45px;
+        padding: 0px;
+    }
+    .payment-ways >div ~div {
+        border-top: 1px solid #e0e0e0;
+    }
+    label {
+        cursor: pointer;
+        background: url('../image/frontend/address_radio_unchecked.png') no-repeat right center ;
+        font-weight: normal;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    label.checked {
+        background: url('../image/frontend/address_radio_checked.png') no-repeat right center ;
+    }
+
+    /* 菜品列表 */
+    .total_price {
+        color: #ff2828;
+        float: right;
+    }
+    .am-navbar .am-navbar-nav .am-btn {
+        color: #ffffff;
+    }
 </style>
 
 
@@ -104,8 +156,30 @@
         </a>
     </div>
 
-    <div class="am-g">
-    @foreach ($carts_data as $dishes)
+
+    <div class="am-g remark">
+            备注:<input name="remark" style="border: 0px" placeholder="添加备注">
+    </div>
+
+    <div>支付方式</div>
+
+   <div class="am-g payment-ways">
+       <div class="am-u-sm-12 online-pay">
+           <input id="onlinepay" name="pay_type" type="radio" style="display: none" value="1">
+           <label name="onlinepay" for="onlinepay" class="checked">在线支付</label>
+       </div>
+       <div class="am-u-sm-12 arrival-pay">
+           <input id="arrivalpay" name="pay_type" type="radio" style="display: none" value="2">
+           <label name="arrivalpay" for="arrivalpay">餐到付款</label>
+       </div>
+   </div>
+
+    <div class="am-g dishes">
+        <div class="dish">
+            订单总计
+            <span class="total_price">￥88888</span>
+        </div>
+        @foreach ($carts_data as $dishes)
 
         <div id="{{$dishes['id']}}" class="am-g dish">
 
@@ -116,17 +190,12 @@
             </div>
             <div class="am-u-sm-4">
 
-
                 <div class="am-g">
-                    <div class="am-u-sm-4" style="padding: 0px;">
+                    <div class="am-u-sm-4" style="padding: 0px;  text-align: center;">
                         x{{$dishes['amount']}}
                     </div>
-
-                    <div class="am-u-sm-1" style="padding: 0px;line-height: 26px">
-                        ￥
-                    </div>
-                    <div class="am-u-sm-6 dish-price" style="">
-                        {{$dishes['price']}}
+                    <div class="am-u-sm-8 dish-price" style="text-align: right">
+                        ￥{{$dishes['price']}}
                     </div>
                 </div>
             </div>
@@ -135,47 +204,66 @@
 
     @endforeach
     </div>
-
-    <form method="post" id="make_order_form" action="/order/make_order" style="">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <input id="carts_data" type="hidden" name="carts_data" value="{{json_encode($carts_data)}}">
-        <div class="am-g details">
-
+    <!-- 底栏 -->
+    <div data-am-widget="navbar" class="am-navbar am-cf " id="" style="z-index: 1009">
+        <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
             <div class="am-g">
-                <input type="text" name="address" class="am-form-field am-radius" placeholder="地址" />
+                <div class="am-u-sm-12">
+                    <a class="am-btn"  id="make_order_btn" style="  line-height: 35px;">
+                        立即下单
+                    </a>
+                </div>
+                <div class="background" style="  position: absolute;left: -1px;
+  width: 101%;
+  z-index: -1;">
+                    <img style="width: 100%" src="{{asset('/image/frontend/address_bottombar_bg.png')}}">
+                </div>
             </div>
-            <div class="am-g">
-                <input type="text" name="phone"   class="am-form-field am-radius" placeholder="手机/电话号码" />
-            </div>
-            <div class="am-g">
-                <input type="text" name="remark"  class="am-form-field am-radius" placeholder="备注" />
-            </div>
-
-            <div class="am-g">
-                <input type="hidden" name="pay_type" value="1">
-                <div class="am-form-field  payment-ways">餐到付款</div>
-            </div>
-
         </div>
+    </div>
+    <!-- 底栏 -->
+    {{--<form method="post" id="make_order_form" action="/order/make_order" style="">--}}
+        {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
+        {{--<input id="carts_data" type="hidden" name="carts_data" value="{{json_encode($carts_data)}}">--}}
+        {{--<div class="am-g details">--}}
 
-        <div class="make-order-btn">
-            <button id="make_order" type="submit" class="am-btn am-btn-secondary am-btn-block">立即下单</button>
-        </div>
-    </form>
+            {{--<div class="am-g">--}}
+                {{--<input type="text" name="address" class="am-form-field am-radius" placeholder="地址" />--}}
+            {{--</div>--}}
+            {{--<div class="am-g">--}}
+                {{--<input type="text" name="phone"   class="am-form-field am-radius" placeholder="手机/电话号码" />--}}
+            {{--</div>--}}
+            {{--<div class="am-g">--}}
+                {{--<input type="text" name="remark"  class="am-form-field am-radius" placeholder="备注" />--}}
+            {{--</div>--}}
+
+            {{--<div class="am-g">--}}
+                {{--<input type="hidden" name="pay_type" value="1">--}}
+                {{--<div class="am-form-field  payment-ways">餐到付款</div>--}}
+            {{--</div>--}}
+
+        {{--</div>--}}
+
+        {{--<div class="make-order-btn">--}}
+            {{--<button id="make_order" type="submit" class="am-btn am-btn-secondary am-btn-block">立即下单</button>--}}
+        {{--</div>--}}
+    {{--</form>--}}
 
 
     <script type="text/javascript">
 
         $(function(){
 
+
+
             var order = {
-
                 init:function(){
-
-
-
+                    $('.payment-ways label').click(function(){
+                        var radioId = $(this).attr('name');
+                        $('label').removeAttr('class') && $(this).attr('class', 'checked');
+                        $('input[type="radio"]').removeAttr('checked') && $('#' + radioId).attr('checked', 'checked');
+                    });
                 }
-
             };
 
             order.init();
