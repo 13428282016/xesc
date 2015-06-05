@@ -52,20 +52,20 @@
     <header data-am-widget="header" class="am-header am-header-fixed">
         <div class="am-header-left am-header-nav">
             <a href="#left-link" class="">
-                <i class="am-header-icon am-icon-home" style="font-size: 25px"></i>
+                {{--<i class="am-header-icon am-icon-home" style="font-size: 25px"></i>--}}
             </a>
         </div>
         <h1 class="am-header-title">
-            <a href="#title-link" class="">小二上菜</a>
+            {{--<a href="#title-link" class="">小二上菜</a>--}}
         </h1>
         <div class="am-header-right am-header-nav">
-            <a href="#right-link" class="" data-am-offcanvas="{target: '#doc-oc-demo3'}">
+            <a href="#right-link" class="" data-am-offcanvas="{target: '#user_center'}">
                 <img src="{{asset('/image/frontend/dish_person.png')}}" style="height: 25px" alt=""/>
             </a>
         </div>
 
         <!-- 侧边栏内容 -->
-        <div id="doc-oc-demo3" class="am-offcanvas">
+        <div id="user_center" class="am-offcanvas">
             <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="  width: 50%;">
                 <div class="am-offcanvas-content">
                     <div class="avatar" align="center">

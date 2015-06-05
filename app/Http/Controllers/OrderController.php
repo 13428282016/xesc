@@ -99,14 +99,6 @@ class OrderController extends Controller {
 						'dish_id' => '3',
 						'dishes_image' => '',
 					),
-					array(
-						'dish_id' => '3',
-						'dishes_image' => '',
-					),
-					array(
-						'dish_id' => '3',
-						'dishes_image' => '',
-					)
 				)
 			),
 			array(
@@ -130,9 +122,33 @@ class OrderController extends Controller {
 		$orderinfo = array(
 
 			'id' => '1',
-			'order_no' => '',
-
-
+			'order_no' => '2314124211312',
+			'created_at' => date('Y-m-d H:i:s'),
+			'pay_type' => '餐到付款',
+			'recv_contact' => '18812341234',
+			'recv_address' => '广州市荔湾区动感小西瓜',
+			'price' => "680.00",
+			'status' => 2,
+			'dishes' => array(
+				array(
+					'dish_id' => '1',
+					'dishes_name' => '香辣排骨',
+					'dishes_amount' => 1,
+					'dishes_price' => "12.00",
+				),
+				array(
+					'dish_id' => '2',
+					'dishes_name' => '香辣牛肉',
+					'dishes_amount' => 3,
+					'dishes_price' => "45.00",
+				),
+				array(
+					'dish_id' => '3',
+					'dishes_name' => '牛肉炒粉',
+					'dishes_amount' => 10,
+					'dishes_price' => "100.00",
+				),
+			)
 		);
 
 		return view('frontend/order_details',['title' => '订单详细','orderinfo' => $orderinfo]);

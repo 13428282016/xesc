@@ -38,12 +38,31 @@
             border-radius: 10px;
         }
 
+        .dishes .dishes-img {
+            float: left;
+        }
+
         .dishes .right-arrow {
             float: right;
         }
-        /*.dishes>div {*/
-            /*display: inline-block;*/
-        /*}*/
+
+        .no-order-icon,.no-orders,.reminder-notes {
+            text-align: center;
+        }
+
+        .no-order-icon {
+            margin-top: 20%;
+        }
+
+        .no-orders {
+            margin-top: 20px;
+            color: #333333;
+        }
+
+        .reminder-notes {
+            margin-top: 10px;
+            color: #808080;
+        }
 
     </style>
 
@@ -58,27 +77,30 @@
                     <span class="created-time">{{$orderinfo['created_at']}}</span>
                     <span class="status">{{$orderinfo['status']}}</span>
                 </div>
+                <a href="/order/order-details-view?order_id={{$orderinfo['id']}}">
                 <div class="dishes">
                     <div class="dishes-img">
-
-                    <nobr>
                     @foreach($orderinfo["dishes"] as $dish)
-
                         <img height="45" src="{{asset('/image/frontend/dish_paigu.png')}}">
-
                     @endforeach
-                    </nobr>
                     </div>
-                    {{--<div class="arrow-icon">--}}
-                        <span class="right-arrow"> <img width="9" src="{{asset('/image/frontend/orderconfirm_right_gray_arrow.png')}}"></span>
-                    {{--</div>--}}
+                    <span class="right-arrow"> <img width="9" src="{{asset('/image/frontend/orderconfirm_right_gray_arrow.png')}}"></span>
                 </div>
+                </a>
             </div>
             @endforeach
 
         @else
 
-
+            <div class="no-order-icon">
+                <img width="40" src="{{asset('/image/frontend/order_list_no_order.png')}}">
+            </div>
+            <div class="no-orders">
+                还没点餐哦
+            </div>
+            <div class="reminder-notes">
+                快去找小二下单吧
+            </div>
         @endif
 
     </div>

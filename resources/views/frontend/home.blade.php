@@ -39,6 +39,11 @@
 		padding-left: 5px;
 	}
 
+	.dish .dish-details {
+		padding-left: 10px;
+		float: left;
+	}
+
 	.dish span {
 		padding: 0px 4px;
 	}
@@ -48,17 +53,12 @@
 	}
 
 	.dish .dish-operation {
-		position: absolute;
-		right: -2px;
-		bottom: 1px;
+		float: right;
+		margin-top: 53px;
 	}
 
 	.dish .dish-operation .add {
 		line-height: 0.5;
-	}
-
-	.dish .dish-operation .minus {
-		font-size: 20px;
 	}
 
 	.shopping-cart {
@@ -66,16 +66,6 @@
 	}
 
 	/** 底部 **/
-	.am-navbar  {
-		{{--background: url('{{asset('/image/frontend/index_bottombar_bg.png')}}') no-repeat center  ;--}}
-		{{--background-size: auto 150%;--}}
-	}
-
-	{{--.am-navbar .am-navbar-nav {--}}
-		{{--background: url('{{asset('/image/frontend/index_bottombar_count_bg.png')}}') no-repeat center  ;--}}
-		{{--background-size: auto 80%;--}}
-	{{--}--}}
-
 	.am-navbar .am-navbar-nav div.dish-count {
 		position: absolute;
 		top: -21px;
@@ -109,7 +99,7 @@
 		<div id="{{$i}}" class="am-g dish">
 
 			<img class="dish-image" style="float: left" width="85" src="{{asset('/image/frontend/dish_paigu.png')}}">
-			<div class="am-u-sm-9">
+			<div class="dish-details">
 				<div class="dish-name">
 					{{$dishes[$i]['name']}}
 				</div>
@@ -119,13 +109,14 @@
 				<div class="dish-price">
 					￥{{$dishes[$i]['price']}}
 				</div>
-				<div class="dish-operation">
 
-					<span data-index="{{$i}}" class="minus" style="display: none"><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
-					<span  class="amount" style="display: none">0</span>
-					<span data-index="{{$i}}" class="add"><img src="{{asset('/image/frontend/dish_add.png')}}"></span>
+			</div>
+			<div class="dish-operation">
 
-				</div>
+				<span data-index="{{$i}}" class="minus" style="display: none"><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
+				<span  class="amount" style="display: none">0</span>
+				<span data-index="{{$i}}" class="add"><img src="{{asset('/image/frontend/dish_add.png')}}"></span>
+
 			</div>
 		</div>
 

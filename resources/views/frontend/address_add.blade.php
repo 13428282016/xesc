@@ -4,6 +4,9 @@
 @section('content')
 <style>
 
+        .am-container {
+            padding-top: 10px;
+        }
         .am-container .addresses {
             background-color: #ffffff;
             -webkit-border-radius: 15px;

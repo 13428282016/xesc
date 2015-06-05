@@ -22,6 +22,7 @@
     }
 
     .am-container {
+        padding-top: 10px;
     }
 
     .am-container>.am-g {

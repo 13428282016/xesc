@@ -12,7 +12,7 @@
         }
     </style>
 
-    <header data-am-widget="header" class="am-header">
+    <header data-am-widget="header" class="am-header am-header-fixed">
         <div class="am-header-left am-header-nav">
             <a id="back"  class="" style="cursor: pointer" onclick="history.go(-1)">
                 <img src="{{asset('/image/frontend/orderconfirm_left_yellow_arrow.png')}}">
