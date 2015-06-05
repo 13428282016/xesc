@@ -4,6 +4,7 @@ use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use xesc\Order;
 
 class OrdersController extends Controller {
 
@@ -15,6 +16,8 @@ class OrdersController extends Controller {
 	public function index()
 	{
 		//
+        $orders=Order::all();
+        return view('',['orders'=>$orders]);
 	}
 
 	/**
@@ -46,6 +49,8 @@ class OrdersController extends Controller {
 	public function show($id)
 	{
 		//
+        $order=Order::find($id);
+        return view('',['order',$order]);
 	}
 
 	/**
@@ -57,6 +62,7 @@ class OrdersController extends Controller {
 	public function edit($id)
 	{
 		//
+
 	}
 
 	/**
@@ -80,5 +86,21 @@ class OrdersController extends Controller {
 	{
 		//
 	}
+
+    public function  doing(Request $request)
+    {
+        $args=$request->only('id');
+        $order=Order::find($args['id']);
+        $order->status=Order::STATUS_DOING;
+        $order->save();
+
+    }
+    public function ship(Request $request)
+    {
+        $args=$request->only('id');
+        $order=Order::find($args['id']);
+        $order->status=Order::STATUS_SHIPPING;
+        $order->save();
+    }
 
 }

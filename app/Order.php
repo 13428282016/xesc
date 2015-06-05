@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Orders extends Model {
+class Order extends Model {
 
 	//
     /**
@@ -10,6 +10,14 @@ class Orders extends Model {
      *
      * @var string
      */
+
+     const  STATUS_WAITTING_PAY=1;
+      const  STATUS_DOING=2;
+      const  STATUS_SHIPPING=3;
+    const  STATUS_FINISHED=4;
+    const  STATUS_CANCEL=10;
+
+
     protected $table = 'orders';
     public function user()
     {
