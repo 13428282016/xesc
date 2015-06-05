@@ -16,6 +16,7 @@ class OrderTable extends Migration {
         Schema::create('orders',function(Blueprint $table){
 
             $table->increments('id');
+            $table->string('order_no',32);
             $table->decimal('price',10,2)->unsigned();
             $table->string('remark',32);
             $table->dateTime('pay_at');

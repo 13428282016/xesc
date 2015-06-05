@@ -81,11 +81,12 @@
                         <span><img width="25" src="{{asset('/image/frontend/siderbar_myaddresses.png')}}"><a href="/address/addresses-view">我的送餐地址</a></span>
                     </div>
                     <div class="addresses">
-                        <span><img width="25" src="{{asset('/image/frontend/siderbar_myorders.png')}}"><a href="#">我的订单</a></span>
+                        <span><img width="25" src="{{asset('/image/frontend/siderbar_myorders.png')}}"><a href="/order/orders-view">我的订单</a></span>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- 侧边栏内容 -->
     </header>
 
     {{--<header class="am-topbar" style="margin-bottom: 0px">--}}

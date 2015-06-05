@@ -70,6 +70,74 @@ class OrderController extends Controller {
 
 	}
 
+
+	public function getOrdersView(Request $request) {
+
+		$orderinfos = array(
+			array(
+				'id' => '1',
+				'created_at' => date('Y-m-d H:i:s'),
+				'status' => '订单已提交',
+				'dishes' => array(
+					array(
+						'dish_id' => '1',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '2',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '3',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '3',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '3',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '3',
+						'dishes_image' => '',
+					),
+					array(
+						'dish_id' => '3',
+						'dishes_image' => '',
+					)
+				)
+			),
+			array(
+				'id' => '2',
+				'created_at' => date('Y-m-d H:i:s'),
+				'status' => '订单已提交',
+				'dishes' => array(
+					array(
+						'dish_id' => '1',
+						'dishes_image' => '',
+					)
+				)
+			),
+		);
+
+		return view('frontend/order',['title' => '订单','orderinfos' => $orderinfos]);
+	}
+
+	public function getOrderDetailsView(Request $request) {
+
+		$orderinfo = array(
+
+			'id' => '1',
+			'order_no' => '',
+
+
+		);
+
+		return view('frontend/order_details',['title' => '订单详细','orderinfo' => $orderinfo]);
+	}
+
 	/**
 	 *  for generate test data
 	 */
