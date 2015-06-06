@@ -101,7 +101,7 @@
             </div>
             <div class="am-g" style="border-bottom: 0px">
                 送餐地址:
-                <input name="address" value="{{$addr->address}}" placeholder="请填写详细收餐地址">
+                <input name="address" style="width: 70%" value="{{$addr->address}}" placeholder="请填写详细收餐地址">
             </div>
 
         </div>
@@ -115,7 +115,7 @@
         <div class="am-g">
             <div class="am-u-sm-12">
                 <button
-                     class="am-btn"  id="add_addresses_btn" style="  line-height: 35px;">
+                     class="am-btn"  id="add_addresses_btn" style=" background-color: transparent ;line-height: 35px;">
                     确 定
                 </button>
             </div>

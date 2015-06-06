@@ -171,7 +171,7 @@
                                 x{{$dish->pivot->dishes_amount}}
                             </div>
                             <div class="am-u-sm-8 dish-price" style="text-align: right">
-                                ￥{{$dish['pivot']['dishes_price']}}
+                                ￥{{number_format($dish->price * $dish->pivot->dishes_amount,2)}}
                             </div>
                         </div>
                     </div>

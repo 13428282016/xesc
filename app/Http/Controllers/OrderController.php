@@ -107,7 +107,7 @@ class OrderController extends Controller {
 			$orderdishes->dishes_id     = $dish->id;
 			$orderdishes->dishes_amount = $dish->pivot->dishes_amount;
 			$orderdishes->dishes_name   = $dish->name;
-			$orderdishes->dishes_price  = $dish->price * $dish->pivot->dishes_amount;
+			$orderdishes->dishes_price  = $dish->price;
 			$orderdishes->dishes_image  = $dish->image;
 			$orderdishes->save();
 
@@ -132,7 +132,7 @@ class OrderController extends Controller {
 	public function getOrdersView(Request $request) {
 
 		$user = $request->session()->get('user');
-		return view('frontend/order',['title' => '订单','orderinfos' => $user->orders]);
+		return view('frontend/order',['title' => '订单','orderinfos' => $user->orders()->orderBy('created_at','desc')->get()]);
 
 	}
 

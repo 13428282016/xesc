@@ -20,7 +20,7 @@ class RecvAddrController extends Controller {
 		//
         $user=Session::get('user');
 
-        return view('recv_addr/index',['addrs'=>$user->recvAddrs,'title'=>'收货地址','chooseAddr' => $request->input('chooseAddr')]);
+        return view('recv_addr/index',['addrs'=>$user->recvAddrs,'title'=>'送餐地址','chooseAddr' => $request->input('chooseAddr')]);
 	}
 
 
@@ -120,7 +120,7 @@ class RecvAddrController extends Controller {
 		//
         $user=Session::get('user');
         $addr=$user->recvAddrs()->where('id',$id)->get()->first();
-        return view('recv_addr/edit',['addr'=>$addr,'title'=>'编辑收货地址']);
+        return view('recv_addr/edit',['addr'=>$addr,'title'=>'编辑送餐地址']);
 	}
 
 	/**

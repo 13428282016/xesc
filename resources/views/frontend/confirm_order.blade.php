@@ -180,7 +180,7 @@
 
 <div class="am-container">
 
-    <form action="/order/make-order" method="post">
+    <form id="make-order-form" action="/order/make-order" method="post">
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="am-g">
         <div class="address">
@@ -229,7 +229,7 @@
         <div class="dish">
             订单总计
             <input type="hidden" name="price" value="{{$total_price}}">
-            <span class="total_price">￥{{$total_price}}</span>
+            <span class="total_price">￥{{number_format($total_price,2)}}</span>
         </div>
         @foreach ($userDishes as $dish)
 
@@ -247,7 +247,7 @@
                         x{{$dish->pivot->dishes_amount}}
                     </div>
                     <div class="am-u-sm-8 dish-price" style="text-align: right">
-                        ￥{{$dish->price*$dish->pivot->dishes_amount}}
+                        ￥{{number_format($dish->price*$dish->pivot->dishes_amount,2)}}
                     </div>
                 </div>
             </div>
@@ -261,7 +261,7 @@
         <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
             <div class="am-g">
                 <div class="am-u-sm-12">
-                    <button class="am-btn" type="submit"  id="make_order_btn" style="  line-height: 35px;background-color: transparent">
+                    <button class="am-btn" type="button"  id="make_order_btn" style="  line-height: 35px;background-color: transparent">
                         立即下单
                     </button>
                 </div>
@@ -301,14 +301,20 @@
             {{--<button id="make_order" type="submit" class="am-btn am-btn-secondary am-btn-block">立即下单</button>--}}
         {{--</div>--}}
     {{--</form>--}}
-
+    <div class="am-modal am-modal-alert" tabindex="-1" id="no-address-alert">
+        <div class="am-modal-dialog">
+            <div class="am-modal-bd">
+                选个地址先
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn">确定</span>
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
 
         $(function(){
-
-
-
             var order = {
                 init:function(){
                     $('.payment-ways label').click(function(){
@@ -316,18 +322,21 @@
                         $('label').removeAttr('class') && $(this).attr('class', 'checked');
                         $('input[type="radio"]').removeAttr('checked') && $('#' + radioId).attr('checked', 'checked');
                     });
+                    $('#make_order_btn').click(function(){
+
+                        if ($("input[name='addressId']").length) {
+                            $('#make-order-form').submit();
+                        } else {
+                            $('#no-address-alert').modal();
+                        }
+
+                    });
                 }
             };
-
             order.init();
-
         })
 
-
-
-
     </script>
-
 
 </div>
 @endsection
