@@ -48,7 +48,6 @@ class IndexController extends Controller {
 //			echo $dish->price." * ".$dish->pivot->dishes_amount." = ".$totalPrice."   <br/>";
 		}
 
-
 		return view('frontend/home',['dishes' => $dishes,'cartDishes' => $cartDishes,'totalPrice' => $totalPrice,'totalAmount' => $totalAmount]);
 	}
 

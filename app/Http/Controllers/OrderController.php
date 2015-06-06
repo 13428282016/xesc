@@ -82,8 +82,6 @@ class OrderController extends Controller {
 		$user 		= $request->session()->get('user');
 		$userDishes = $user->cart->dishes()->get();
 
-		dump($userDishes);
-
 		if (!$userDishes) {
 			Redirect::to("/");
 		}
