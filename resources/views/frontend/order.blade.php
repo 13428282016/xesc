@@ -1,9 +1,21 @@
 @extends('layout.index')
-@extends('layout.header')
 
 @section('content')
 
     <style>
+
+        .am-container {
+            padding-top: 10px;
+        }
+        .am-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #fd4548;
+            margin-bottom: 10px;
+
+        }
+        .am-header .am-header-title a {
+            color: #333333;
+        }
 
         div.am-container>.orders{
             padding: 5px 10px;
@@ -65,6 +77,19 @@
         }
 
     </style>
+
+    <header data-am-widget="header" class="am-header am-header-fixed">
+        <div class="am-header-left am-header-nav">
+            <a id="back" href="\" style="cursor: pointer" >
+                <img src="{{asset('/image/frontend/orderconfirm_left_yellow_arrow.png')}}">
+            </a>
+
+        </div>
+        <h1 class="am-header-title">
+            <a href="#title-link" class="">{{$title}}</a>
+        </h1>
+
+    </header>
 
     <div class="am-container">
 

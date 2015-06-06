@@ -32,8 +32,8 @@ $(function() {
                 var index = $this.data("index");
                 var amount = +$this.siblings('.amount').html();
                 if (amount == 0) {
-                    $this.siblings('.minus').css({'display':'inline'});
-                    $this.siblings('.amount').css({'display':'inline'});
+                    $this.siblings('.minus').css({'display':'inline-block'});
+                    $this.siblings('.amount').css({'display':'inline-block'});
                 }
                 $this.siblings('.amount').html(++amount);
                 self.add_dishes(index);
@@ -74,7 +74,7 @@ $(function() {
             this.total_price += parseFloat(dish_data["price"]);
 
             $(".dish-count .value .total-amount").html(this.total_amount);
-            this.o_total_price.html("￥"+this.total_price);
+            this.o_total_price.html(this.total_price);
 
 
             var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],amount:$(".dish-operation .amount").html()};
@@ -96,21 +96,23 @@ $(function() {
 
             if (this.total_amount == 0) {
                 $(".dish-count .value .total-amount").html("");
-                $(".dish-count .value .cart-icon").css({'display':'inline'})
+                $(".dish-count .value .cart-icon").css({'display':'inline-block'})
             } else {
                 $(".dish-count .value .total-amount").html(this.total_amount);
             }
 
             this.total_price -= parseFloat(dish_data["price"]);
-            this.o_total_price.html("￥"+this.total_price);
+            this.o_total_price.html(this.total_price);
 
             var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],amount:$(".dish-operation .amount").html()};
             cart_dish["amount"] -- ;
+
             if (cart_dish['amount'] == 0) {
                 delete this.carts_data[index];
             } else {
                 this.carts_data[index] = cart_dish;
             }
+
             $.post('/cart/decrease-dishes',{
                 'dishes_id':cart_dish['id'],
                 'open_id':1,
@@ -121,11 +123,16 @@ $(function() {
         confirm_order:function() {
 
             $('#carts_data').val(JSON.stringify(this.carts_data));
-            $('#confirm_order').submit();
+
+            if (this.total_price > 0) {
+                $('#confirm_order').submit();
+            } else {
+                $('#no-dishes-alert').modal();
+
+            }
 
         },
         toggleCart:function(){
-
 
             if($('#cart-panel').hasClass('down'))
             {
@@ -136,12 +143,6 @@ $(function() {
             {
                 $('#cart-panel,#cart').addClass('down').removeClass('up');
             }
-
-            //$.post('/cart/dishes',{_token:$('csrf_totken').val()}, function (data) {
-            //
-            //
-            //
-            //})
         }
 
     };

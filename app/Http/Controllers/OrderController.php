@@ -30,10 +30,6 @@ class OrderController extends Controller {
 
 	}
 
-	public function postAddAddr(Request $request) {
-
-	}
-
 	public function postChooseAddr(Request $request) {
 
 		$user = $request->session()->get('user');
@@ -47,12 +43,10 @@ class OrderController extends Controller {
 	}
 
 	/**
-	 * Show the application welcome screen to the user.
+	 * 展示确认订单页面
 	 *
 	 * @return Response
 	 */
-
-
 	public function getConfirmOrderView(Request $request) {
 
 
@@ -76,6 +70,11 @@ class OrderController extends Controller {
 
 	}
 
+	/**
+	 * 下单
+	 * @param Request $request
+	 * @return \Illuminate\View\View
+	 */
 	public function postMakeOrder(Request $request) {
 
 
@@ -103,21 +102,30 @@ class OrderController extends Controller {
 
 		foreach ($userDishes as $dish) {
 
-				$orderdishes = new OrdersDishes();
-			    $orderdishes->order_id 		= $order->id;
-			    $orderdishes->dishes_id     = $dish->id;
-			    $orderdishes->dishes_amount = $dish->pivot->dishes_amount;
-			    $orderdishes->dishes_name   = $dish->name;
-			    $orderdishes->dishes_price  = $dish->price * $dish->pivot->dishes_amount;
-			    $orderdishes->dishes_image  = $dish->image;
-			    $orderdishes->save();
+			$orderdishes = new OrdersDishes();
+			$orderdishes->order_id 		= $order->id;
+			$orderdishes->dishes_id     = $dish->id;
+			$orderdishes->dishes_amount = $dish->pivot->dishes_amount;
+			$orderdishes->dishes_name   = $dish->name;
+			$orderdishes->dishes_price  = $dish->price * $dish->pivot->dishes_amount;
+			$orderdishes->dishes_image  = $dish->image;
+			$orderdishes->save();
 
 		}
 
 		$cart=$user->cart;
 		$cart->dishes()->detach();
 
-		return  view('frontend/order_details',['title' => '订单详细','orderinfo' => $order]);
+		return Redirect::to('/order/orders-view');
+
+//		return  view('frontend/order_details',['title' => '订单详细','orderinfo' => $order]);
+
+	}
+
+	public function postConfirmRecv(Request $request) {
+
+		Order::where('id','=',$request->input('order_id'))->update(['status' => 4]);
+		return Redirect::to('order/order-details-view?order_id='.$request->input('order_id'));
 
 	}
 
@@ -125,6 +133,7 @@ class OrderController extends Controller {
 
 		$user = $request->session()->get('user');
 		return view('frontend/order',['title' => '订单','orderinfos' => $user->orders]);
+
 	}
 
 	public function getOrderDetailsView(Request $request) {
