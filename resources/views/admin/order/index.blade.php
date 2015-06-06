@@ -49,7 +49,7 @@ div#orders .order .operation
 <div class="panel-heading">订单管理</div>
   <div id="orders" class="panel-body">
   <ul id="nav" class="nav nav-pills">
-    <li role="presentation" class="@if($type==\xesc\Order::STATUS_WAITTING_PAY)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_SUBMITTED)}}">已提交</a>  <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_SUBMITTED]}}</span></li>
+    <li role="presentation" class="@if($type==\xesc\Order::STATUS_SUBMITTED)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_SUBMITTED)}}">已提交</a>  <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_SUBMITTED]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_DOING)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_DOING)}}">制作中</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_DOING]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_SHIPPING)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_SHIPPING)}}">配送中</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_SHIPPING]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_FINISHED)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_FINISHED)}}">已完成</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_FINISHED]}}</span></li>
@@ -112,9 +112,15 @@ div#orders .order .operation
             </tbody>
           </table>
           <div class="operation">
-            <button type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
+
+
+              <button type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
+
             <button type="button" class="btn @if($order->status!=\xesc\Order::STATUS_DOING)hide @endif btn-success " >配送</button>
+
+
             <button type="button" class="btn btn-info @if($order->status==\xesc\Order::STATUS_FINISHED)hide @endif " >取消订单</button>
+
           </div>
         </div>
         @endforeach

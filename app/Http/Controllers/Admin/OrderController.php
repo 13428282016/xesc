@@ -120,12 +120,15 @@ class OrderController extends Controller
         //
     }
 
-    public function  postDoing(Request $request)
+    public function  postDo(Request $request)
     {
         $args = $request->only('id');
         $order = Order::find($args['id']);
         $order->status = Order::STATUS_DOING;
-        $order->save();
+        if($order->save())
+        {
+            return redirect()->back();
+        }
 
     }
 
@@ -134,12 +137,21 @@ class OrderController extends Controller
         $args = $request->only('id');
         $order = Order::find($args['id']);
         $order->status = Order::STATUS_SHIPPING;
-        $order->save();
+        if($order->save())
+        {
+            return redirect()->back();
+        }
     }
 
     public function postCancel(Request $request)
     {
-
+        $args = $request->only('id');
+        $order = Order::find($args['id']);
+        $order->status = Order::STATUS_CANCEL;
+        if($order->save())
+        {
+            return redirect()->back();
+        }
     }
 
 }
