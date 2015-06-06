@@ -124,7 +124,7 @@ class DishesController extends Controller {
         $dishes=Dishes::find($id);
          if($dishes->delete())
          {
-             return "true";
+             return redirect('admin/dishes');
          }
 
     }

@@ -106,13 +106,17 @@ bottom: -350px;
 #cart-panel img:first-child
 {
    width: 100%;
-   height: 25px;
+   height: 32px;
+
 
 }
 #cart-panel .content
 {
-   height: 300px;
+   height: 270px;
+   padding-bottom: 48px;
+   box-sizing: content-box;
    background: #ffffff;
+
 }
 #cart-panel.up{
 
@@ -128,7 +132,7 @@ bottom: -350px;
 }
 #cart.up
 {
-top:-309px;
+top:-315px;
 }
 #cart.down
 {
