@@ -39,13 +39,13 @@ class Order extends Model {
 
     public static  function orderStatus($status) {
         switch($status) {
-            case 1 :
-                return "订单已提交";
-            case 2 :
+            case self::STATUS_SUBMITTED :
+                return "已提交";
+            case self::STATUS_DOING  :
                 return "小二已接单";
-            case 3 :
-                return "确认收餐";
-            case 4 :
+            case self::STATUS_SHIPPING :
+                return "配送中";
+            case self::STATUS_FINISHED :
                 return "已收餐";
 
         }

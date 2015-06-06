@@ -114,7 +114,7 @@ div#orders .order .operation
           <div class="operation">
             <button type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
             <button type="button" class="btn @if($order->status!=\xesc\Order::STATUS_DOING)hide @endif btn-success " >配送</button>
-            <button type="button" class="btn btn-info @if($order->status!=\xesc\Order::STATUS_FINISHED)hide @endif " >取消订单</button>
+            <button type="button" class="btn btn-info @if($order->status==\xesc\Order::STATUS_FINISHED)hide @endif " >取消订单</button>
           </div>
         </div>
         @endforeach
