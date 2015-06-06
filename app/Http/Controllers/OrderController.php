@@ -1,5 +1,6 @@
 <?php namespace xesc\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use xesc\Order;
 use xesc\Carts;
 use xesc\Dishes;
@@ -26,6 +27,23 @@ class OrderController extends Controller {
 	public function __construct()
 	{
 
+
+	}
+
+	public function postAddAddr(Request $request) {
+
+	}
+
+	public function postChooseAddr(Request $request) {
+
+		$user = $request->session()->get('user');
+		$user->recvAddrs()->update(['is_default' => 0]);
+		$userAddress = $user->recvAddrs()->find($request->input('addressId'));
+		$userAddress->is_default = 1;
+		$userAddress->save();
+
+		return Redirect::to('order/confirm-order-view');
+
 	}
 
 	/**
@@ -38,8 +56,6 @@ class OrderController extends Controller {
 	public function getConfirmOrderView(Request $request) {
 
 
-		$carts_data = $request->input('carts_data');
-
 		$user = $request->session()->get('user');
 		$userDishes  =$user->cart->dishes()->get();
 		$userAddress = $user->recvAddrs()->where('is_default','=',1)->first();
@@ -50,7 +66,6 @@ class OrderController extends Controller {
 		}
 
 		$params = array(
-			'carts_data'  => json_decode($carts_data,1),
 			'title'		  => '订单确认',
 			'userDishes'  => $userDishes,
 			'total_price' => $total_price,
@@ -64,12 +79,16 @@ class OrderController extends Controller {
 	public function postMakeOrder(Request $request) {
 
 
-		$user = $request->session()->get('user');
-		$userDishes  =$user->cart->dishes()->get();
-		$userAddress = $user->recvAddrs()->find($request->input('addressId'));
+		$user 		= $request->session()->get('user');
+		$userDishes = $user->cart->dishes()->get();
 
-//		dump($userDishes);
-//		dump($userAddress);
+		dump($userDishes);
+
+		if (!$userDishes) {
+			Redirect::to("/");
+		}
+
+		$userAddress = $user->recvAddrs()->find($request->input('addressId'));
 
 		$order = new Order();
 		$order->recv_address   = $userAddress->address;
@@ -81,6 +100,7 @@ class OrderController extends Controller {
 		$order->price		   = $request->input('price');
 		$order->status		   = Order::STATUS_WAITTING_PAY;
 		$order->order_no       = time();
+		$order->buyer_id       = $user->id;
 		$order->save();
 
 		foreach ($userDishes as $dish) {
@@ -96,150 +116,24 @@ class OrderController extends Controller {
 
 		}
 
-//		dump($order->dishes->first()->pivot);
+		$cart=$user->cart;
+		$cart->dishes()->detach();
 
 		return  view('frontend/order_details',['title' => '订单详细','orderinfo' => $order]);
 
 	}
 
-
 	public function getOrdersView(Request $request) {
 
-		$orderinfos = array(
-			array(
-				'id' => '1',
-				'created_at' => date('Y-m-d H:i:s'),
-				'status' => '订单已提交',
-				'dishes' => array(
-					array(
-						'dish_id' => '1',
-						'dishes_image' => '',
-					),
-					array(
-						'dish_id' => '2',
-						'dishes_image' => '',
-					),
-					array(
-						'dish_id' => '3',
-						'dishes_image' => '',
-					),
-					array(
-						'dish_id' => '3',
-						'dishes_image' => '',
-					),
-					array(
-						'dish_id' => '3',
-						'dishes_image' => '',
-					),
-				)
-			),
-			array(
-				'id' => '2',
-				'created_at' => date('Y-m-d H:i:s'),
-				'status' => '订单已提交',
-				'dishes' => array(
-					array(
-						'dish_id' => '1',
-						'dishes_image' => '',
-					)
-				)
-			),
-		);
-
-		return view('frontend/order',['title' => '订单','orderinfos' => $orderinfos]);
+		$user = $request->session()->get('user');
+		return view('frontend/order',['title' => '订单','orderinfos' => $user->orders]);
 	}
 
 	public function getOrderDetailsView(Request $request) {
 
-		$orderinfo = array(
+		$user = $request->session()->get('user');
+		return view('frontend/order_details',['title' => '订单详细','orderinfo' => $user->orders()->find($request->input('order_id'))]);
 
-			'id' => '1',
-			'order_no' => '2314124211312',
-			'created_at' => date('Y-m-d H:i:s'),
-			'pay_type' => '餐到付款',
-			'recv_contact' => '18812341234',
-			'recv_address' => '广州市荔湾区动感小西瓜',
-			'price' => "680.00",
-			'status' => 2,
-			'dishes' => array(
-				array(
-					'dish_id' => '1',
-					'dishes_name' => '香辣排骨',
-					'dishes_amount' => 1,
-					'dishes_price' => "12.00",
-				),
-				array(
-					'dish_id' => '2',
-					'dishes_name' => '香辣牛肉',
-					'dishes_amount' => 3,
-					'dishes_price' => "45.00",
-				),
-				array(
-					'dish_id' => '3',
-					'dishes_name' => '牛肉炒粉',
-					'dishes_amount' => 10,
-					'dishes_price' => "100.00",
-				),
-			)
-		);
-
-
-
-		return view('frontend/order_details',['title' => '订单详细','orderinfo' => $orderinfo]);
 	}
-
-	/**
-	 *  for generate test data
-	 */
-
-	function dishtestdata() {
-		$data = array(
-			array(
-				'name' => "豆豉排骨",
-				'price' => "10.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			),array(
-				'name' => "鱼香肉丝",
-				'price' => "11.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			),array(
-				'name' => "青椒回锅肉",
-				'price' => "12.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			),array(
-				'name' => "老干妈炒肉",
-				'price' => "13.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			),array(
-				'name' => "辣椒炒牛肉",
-				'price' => "14.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			),array(
-				'name' => "酸辣猪肚",
-				'price' => "15.00",
-				'status' => 1,
-				'image' => 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=56381638,2357882918&fm=116&gp=0.jpg'
-			)
-		);
-
-		foreach ($data as $index => $dishdata) {
-
-			$dishes = new Dishes();
-			$dishes->name   = $dishdata['name'];
-			$dishes->price  = $dishdata['price'];
-			$dishes->status = $dishdata['status'];
-			$dishes->image  = $dishdata['image'];
-			$dishes->save();
-
-		}
-	}
-
-
-
 
 }

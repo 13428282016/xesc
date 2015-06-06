@@ -2,10 +2,14 @@
 @section('header')
 
     <style>
+        .am-container {
+            padding-top: 10px;
+        }
         .am-header {
             background-color: #ffffff;
             border-bottom: 1px solid #fd4548;
             margin-bottom: 10px;
+
         }
         .am-header .am-header-title a {
             color: #333333;

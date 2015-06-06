@@ -1,11 +1,18 @@
 
 @extends('layout.index')
-@extends('layout.header')
-
 
 @section('content')
 
 <style>
+
+    .am-header {
+        background-color: #ffffff;
+        border-bottom: 1px solid #fd4548;
+        margin-bottom: 10px;
+    }
+    .am-header .am-header-title a {
+        color: #333333;
+    }
 
     .dishes {
         padding: 0px 10px;
@@ -83,9 +90,9 @@
     }
 
 
-    .am-container .address .address-details .no-addresses-notes {
+    .am-container .address .address-details .user-info > span {
 
-
+            color: #808080;
     }
 
 
@@ -158,7 +165,18 @@
     }
 </style>
 
+<header data-am-widget="header" class="am-header am-header-fixed">
+    <div class="am-header-left am-header-nav">
+        <a id="back" href="/" class="" style="cursor: pointer" >
+            <img src="{{asset('/image/frontend/orderconfirm_left_yellow_arrow.png')}}">
+        </a>
 
+    </div>
+    <h1 class="am-header-title">
+        <a href="#title-link" class="">{{$title}}</a>
+    </h1>
+
+</header>
 
 <div class="am-container">
 
@@ -172,16 +190,18 @@
                 <div class="address-details" >
 
                     @if($userAddress)
-                    <input type="hidden" name="addressId" value="{{$userAddress['id']}}">
+                    <a href="/recvaddr?chooseAddr=1" style="color: #333">
+                    <input type="hidden"  name="addressId" value="{{$userAddress['id']}}">
                     <div class="address-info">
                         <nobr>{{$userAddress["address"]}}</nobr><br/>
                     </div>
                     <div class="user-info">
                         <span class="username">{{$userAddress["name"]}}</span> <span class="cellphone">{{$userAddress['cellphone']}}</span>
                     </div>
+                    </a>
                     @else
-                    <a href="/address/add-address-view">
-                        <div class="no-addresses-notes" style="color: #333333;">
+                    <a href="/recvaddr/create?chooseAddr=1">
+                        <div class="no-addresses-notes" style="color: #333333;text-align: center;height: 70px;line-height: 70px;">
                          请添加地址
                         </div>
                     </a>

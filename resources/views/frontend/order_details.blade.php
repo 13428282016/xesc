@@ -81,7 +81,6 @@
 
         [class*=am-u-] {
             padding: 0px 6px 0px 0px;
-            padding-right: 6px;
         }
 
 
@@ -98,7 +97,7 @@
             <a href="#title-link" class="">{{$title}}</a>
         </h1>
         <div class="am-header-right am-header-nav">
-            <a href="#right-link" class="">
+            <a href="tel:13318342850" class="">
                 <img src="{{asset('/image/frontend/order_details_phone.png')}}" style="height: 25px" alt=""/>
             </a>
         </div>
@@ -132,8 +131,8 @@
             <div class="info">
                 <p>订单编号: {{$orderinfo['order_no']}}</p>
                 <p>下单时间: {{$orderinfo['created_at']}}</p>
-                <p>支付方式: {{$orderinfo['pay_type']}}</p>
-                <p>手机号码: {{$orderinfo['recv_contact']}}</p>
+                <p>支付方式: {{$orderinfo->orderPaytype($orderinfo['pay_type'])}}</p>
+                <p>手机号码: {{$orderinfo['recv_cellphone']}}</p>
                 <p>收餐地址: {{$orderinfo['recv_address']}}</p>
                 <p>备注: {{$orderinfo['remark']}}</p>
             </div>

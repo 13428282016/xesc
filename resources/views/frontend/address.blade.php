@@ -84,12 +84,12 @@
 
         @foreach($addressinfos as $address)
 
-            <div class="address">
+            <div class="address" data-id="{{$address['id']}}">
 
                 <div class="details">
                         <span class="address-details"><nobr>{{$address["address"]}}</nobr></span><br/>
                     <div class="user-details">
-                        <span class="username">{{$address["name"]}}</span> <span class="cellphone">{{$address['cellphone']}}</span>
+                        <span class="username">{{$address["name"]}}</span> <a style="color: #333"><span class="cellphone">{{$address['cellphone']}}</span></a>
                     </div>
                 </div>
 
@@ -133,5 +133,7 @@
     </div>
 </div>
 <!-- 底栏 -->
+
+
 
 @endsection

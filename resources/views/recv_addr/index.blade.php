@@ -84,7 +84,7 @@
 
         @foreach($addrs as $addr)
 
-            <div class="address">
+            <div class="address" data-id="{{$addr->id}}">
 
                 <div class="details">
                         <span class="address-details"><nobr>{{$addr->address}}</nobr></span><br/>
@@ -133,5 +133,19 @@
     </div>
 </div>
 <!-- 底栏 -->
+    @if($chooseAddr)
 
+        <form id="chooseAddr" style="display: none" method="post" action="/order/choose-addr">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input id="addressId" name="addressId" value="0">
+        </form>
+
+        <script>
+            $('div.am-container>.address').click(function(){
+                $('#chooseAddr #addressId').val($(this).data('id'));
+                $('#chooseAddr').submit();
+            });
+        </script>
+
+    @endif
 @endsection

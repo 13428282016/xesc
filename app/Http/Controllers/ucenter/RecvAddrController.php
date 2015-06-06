@@ -15,13 +15,14 @@ class RecvAddrController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		//
         $user=Session::get('user');
 
-        return view('recv_addr/index',['addrs'=>$user->recvAddrs,'title'=>'收货地址']);
+        return view('recv_addr/index',['addrs'=>$user->recvAddrs,'title'=>'收货地址','chooseAddr' => $request->input('chooseAddr')]);
 	}
+
 
 
 //	public function getAddressesView()
@@ -56,11 +57,11 @@ class RecvAddrController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create(Request $request)
 	{
 		//
 
-        return view('recv_addr/create',['title' => '添加地址']);
+        return view('recv_addr/create',['title' => '添加地址','chooseAddr' => $request->input('chooseAddr')]);
 
 	}
 
@@ -79,10 +80,16 @@ class RecvAddrController extends Controller {
         $user=$request->session()->get('user');
         $addr->user_id=$user->id;
         $addrs_amount=$user->recvAddrs()->count();
-        $addr->is_default= $addrs_amount?false:true;
+        $addr->is_default = !$request->input('chooseAddr') || $addrs_amount ? true : false;
         if($addr->save())
         {
-            return Redirect::to('recvaddr');
+           if ($request->input('chooseAddr')) {
+
+             return Redirect::to('order/confirm-order-view');
+           } else {
+
+             return Redirect::to('recvaddr');
+           }
         }
         else
         {

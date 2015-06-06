@@ -22,6 +22,6 @@ class User extends Model {
     }
     public  function  orders()
     {
-        return $this->hasMany('xesc\Order');
+        return $this->hasMany('xesc\Order','buyer_id');
     }
 }

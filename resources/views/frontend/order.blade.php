@@ -75,7 +75,9 @@
             <div class="am-g orders">
                 <div class="order-header">
                     <span class="created-time">{{$orderinfo['created_at']}}</span>
-                    <span class="status">{{$orderinfo['status']}}</span>
+                    <span class="status">
+                        {{$orderinfo->orderStatus($orderinfo['status'])}}
+                    </span>
                 </div>
                 <a href="/order/order-details-view?order_id={{$orderinfo['id']}}">
                 <div class="dishes">

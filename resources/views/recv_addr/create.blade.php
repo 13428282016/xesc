@@ -74,9 +74,12 @@
 </style>
 
  <!-- 添加地址框 -->
-    <form method="POST" action="/recvaddr">
+
+
+    <form method="POST"  action="/recvaddr" >
     <div class="am-container">
 
+        <input type="hidden" name="chooseAddr" @if($chooseAddr) value="1" @else value="0" @endif>
         <input type="hidden" value="{{csrf_token()}}" name="_token">
         <div class="am-g addresses">
 
@@ -114,13 +117,11 @@
         <div class="am-g">
             <div class="am-u-sm-12">
                 <button
-                     class="am-btn"  id="add_addresses_btn" style="  line-height: 35px;">
+                     class="am-btn"  id="add_addresses_btn" style="  line-height: 35px;background-color: transparent">
                     确 定
                 </button>
             </div>
-            <div class="background" style="  position: absolute;left: -1px;
-  width: 101%;
-  z-index: -1;">
+            <div class="background" style="  position: absolute;left: -1px;width: 101%;z-index: -1;">
                 <img style="width: 100%" src="{{asset('/image/frontend/address_bottombar_bg.png')}}">
             </div>
         </div>
