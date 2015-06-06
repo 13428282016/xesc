@@ -96,7 +96,7 @@ class OrderController extends Controller {
 		$order->pay_type       = $request->input('pay_type');
 		$order->remark		   = $request->input('remark');
 		$order->price		   = $request->input('price');
-		$order->status		   = Order::STATUS_WAITTING_PAY;
+		$order->status		   = Order::STATUS_SUBMITTED;
 		$order->order_no       = time();
 		$order->buyer_id       = $user->id;
 		$order->save();

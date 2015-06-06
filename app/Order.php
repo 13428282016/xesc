@@ -12,10 +12,13 @@ class Order extends Model {
      */
 
 
+    const STATUS_SUBMITTED=0;
      const  STATUS_WAITTING_PAY=1;
-      const  STATUS_DOING=2;
-      const  STATUS_SHIPPING=3;
-    const  STATUS_FINISHED=4;
+
+      const  STATUS_PAYED=2;
+      const  STATUS_DOING=3;
+      const  STATUS_SHIPPING=4;
+    const  STATUS_FINISHED=5;
     const  STATUS_CANCEL=10;
     const STATUS_ALL=20;
 
@@ -34,7 +37,7 @@ class Order extends Model {
         return $this->belongsToMany('xesc\Dishes','order_dishes_mid')->withPivot('dishes_amount','dishes_price');
     }
 
-    public function orderStatus($status) {
+    public static  function orderStatus($status) {
         switch($status) {
             case 1 :
                 return "订单已提交";
@@ -49,7 +52,7 @@ class Order extends Model {
         return "";
     }
 
-    public  function orderPaytype($payType) {
+    public  static  function orderPaytype($payType) {
 
         switch($payType) {
             case 1:

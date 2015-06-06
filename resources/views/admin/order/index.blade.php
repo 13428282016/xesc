@@ -11,13 +11,45 @@ ul#nav li+li
 {
    margin-left: 30px;
 }
+div#orders .order .left
+{
+  float: left;
+}
+div#orders .order .right
+
+{
+  float: right;
+}
+
+div#orders .order  .status{
+ color: red;
+}
+div#orders .order  .summary{
+color: red;
+}
+div#orders .order .right li{
+list-style: none;
+float: left;
+margin: 0 10px;
+
+}
+div#orders .order .table .dishes-img
+{
+  width: 60px;
+  height: 60px;
+}
+div#orders .order .operation
+{
+  text-align: right;
+  padding: 10px;
+}
 </style>
 
 <div class="panel panel-default">
 <div class="panel-heading">订单管理</div>
-  <div class="panel-body">
+  <div id="orders" class="panel-body">
   <ul id="nav" class="nav nav-pills">
-    <li role="presentation" class="@if($type==\xesc\Order::STATUS_WAITTING_PAY)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_WAITTING_PAY)}}">待付款</a>  <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_WAITTING_PAY]}}</span></li>
+    <li role="presentation" class="@if($type==\xesc\Order::STATUS_WAITTING_PAY)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_SUBMITTED)}}">已提交</a>  <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_SUBMITTED]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_DOING)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_DOING)}}">制作中</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_DOING]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_SHIPPING)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_SHIPPING)}}">配送中</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_SHIPPING]}}</span></li>
     <li role="presentation" class="@if($type==\xesc\Order::STATUS_FINISHED)active @endif"><a href="{{url("admin/order?type=".\xesc\Order::STATUS_FINISHED)}}">已完成</a> <span class="badge">{{$ordersAmount[\xesc\Order::STATUS_FINISHED]}}</span></li>
@@ -26,27 +58,64 @@ ul#nav li+li
   </ul>
   <br>
         @foreach($orders as $order)
-        <div class="panel panel-success">
+        <div class="panel order panel-success">
           <!-- Default panel contents -->
-          <div class="panel-heading">
+          <div class="panel-heading clearfix ">
           <div class="left">
           <label>订单号：</label>
           <span>{{$order->order_no}}</span>
           </div>
           <div class="right">
-           <label>状态：</label>
-           <span>{{\xesc\Order::o}}</span>
+            <ul>
+            <li>
+          <label >总价：</label>
+                     <span class="summary">{{$order->price}}</span>
+            </li>
+            <li>
+             <label>状态：</label>
+                       <span class="status">{{\xesc\Order::orderStatus($order->status)}}</span>
+            </li>
+            <li>
+             <label>下单时间：</label>
+                       <span>{{$order->created_at}}</span>
+            </li>
+            </ul>
+
+
+
           </div>
           </div>
 
           <div class="panel-body">
-            <p>...</p>
+
           </div>
 
           <!-- Table -->
-          <table class="table">
-            ...
+          <table class="table table-striped">
+            <thead>
+            <th>美食名</th>
+            <th>美食图片</th>
+            <th>数量</th>
+            <th>单价</th>
+            <th>合计</th>
+            </thead>
+            <tbody>
+            @foreach(DB::table('order_dishes_mid')->where('order_id',$order->id)->get() as $orderDishes)
+            <tr>
+            <td>{{$orderDishes->dishes_name}}</td>
+            <td><img class="dishes-img" src=" {{$orderDishes->dishes_image}}"></td>
+            <td>{{$orderDishes->dishes_amount}}</td>
+            <td>{{$orderDishes->dishes_price}}</td>
+            <td>{{$orderDishes->dishes_price*$orderDishes->dishes_amount}}</td>
+            </tr>
+            @endforeach
+            </tbody>
           </table>
+          <div class="operation">
+            <button type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
+            <button type="button" class="btn @if($order->status!=\xesc\Order::STATUS_DOING)hide @endif btn-success " >配送</button>
+            <button type="button" class="btn btn-info @if($order->status!=\xesc\Order::STATUS_FINISHED)hide @endif " >取消订单</button>
+          </div>
         </div>
         @endforeach
   </div>
