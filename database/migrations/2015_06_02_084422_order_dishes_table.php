@@ -22,6 +22,7 @@ class OrderDishesTable extends Migration {
             $table->string('dishes_name',16);
             $table->string('dishes_image',255);
             $table->decimal('dishes_price',10,2)->unsigned();
+//            $table->timestamps();
 
         });
 	}

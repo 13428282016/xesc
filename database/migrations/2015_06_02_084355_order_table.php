@@ -34,6 +34,8 @@ class OrderTable extends Migration {
             $table->text('receiver_info');
             $table->dateTime('accepted_at');
 
+            $table->string('recv_cellphone',14);
+
         });
 	}
 

@@ -1,6 +1,6 @@
 <?php namespace xesc\Http\Controllers;
 use Illuminate\Http\Request;
-use xesc\Orders;
+use xesc\Order;
 use xesc\Carts;
 use xesc\Dishes;
 use xesc\OrdersDishes;
@@ -40,33 +40,65 @@ class OrderController extends Controller {
 
 		$carts_data = $request->input('carts_data');
 
-		return view('frontend/confirm_order',['carts_data' => json_decode($carts_data,1),'title' => '订单确认']);
+		$user = $request->session()->get('user');
+		$userDishes  =$user->cart->dishes()->get();
+		$userAddress = $user->recvAddrs()->where('is_default','=',1)->first();
+
+		$total_price = 0;
+		foreach($userDishes as $userDish) {
+			$total_price += $userDish->price * $userDish->pivot->dishes_amount;
+		}
+
+		$params = array(
+			'carts_data'  => json_decode($carts_data,1),
+			'title'		  => '订单确认',
+			'userDishes'  => $userDishes,
+			'total_price' => $total_price,
+			'userAddress' => $userAddress
+		);
+
+		return view('frontend/confirm_order',$params);
 
 	}
 
 	public function postMakeOrder(Request $request) {
 
-		$carts_data = json_decode($request->input('carts_data'));
 
-		$order = new Orders();
-		$order->address  = $request->input('address');
-		$order->phone    = $request->input('phone');
-		$order->pay_type = $request->input('pay_type');
-		$order->remark   = $request->input('remark');
+		$user = $request->session()->get('user');
+		$userDishes  =$user->cart->dishes()->get();
+		$userAddress = $user->recvAddrs()->find($request->input('addressId'));
+
+//		dump($userDishes);
+//		dump($userAddress);
+
+		$order = new Order();
+		$order->recv_address   = $userAddress->address;
+		$order->recv_name      = $userAddress->name;
+		$order->recv_cellphone = $userAddress->cellphone;
+		$order->recv_sex       = $userAddress->sex;
+		$order->pay_type       = $request->input('pay_type');
+		$order->remark		   = $request->input('remark');
+		$order->price		   = $request->input('price');
+		$order->status		   = Order::STATUS_WAITTING_PAY;
+		$order->order_no       = time();
 		$order->save();
 
-		foreach ($carts_data as $dish_id => $cart_dish) {
+		foreach ($userDishes as $dish) {
 
 				$orderdishes = new OrdersDishes();
 			    $orderdishes->order_id 		= $order->id;
-			    $orderdishes->dishes_amount = $cart_dish["amount"];
-			    $orderdishes->dishes_name   = $cart_dish["name"];
-			    $orderdishes->dishes_price  = $cart_dish["price"];
+			    $orderdishes->dishes_id     = $dish->id;
+			    $orderdishes->dishes_amount = $dish->pivot->dishes_amount;
+			    $orderdishes->dishes_name   = $dish->name;
+			    $orderdishes->dishes_price  = $dish->price * $dish->pivot->dishes_amount;
+			    $orderdishes->dishes_image  = $dish->image;
 			    $orderdishes->save();
 
 		}
 
-		return "下单成功";
+//		dump($order->dishes->first()->pivot);
+
+		return  view('frontend/order_details',['title' => '订单详细','orderinfo' => $order]);
 
 	}
 
@@ -150,6 +182,8 @@ class OrderController extends Controller {
 				),
 			)
 		);
+
+
 
 		return view('frontend/order_details',['title' => '订单详细','orderinfo' => $orderinfo]);
 	}

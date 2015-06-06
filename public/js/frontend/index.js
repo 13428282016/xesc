@@ -15,8 +15,8 @@ $(function() {
 
     var dishes = {
 
-        total_amount:0,
-        total_price:0.00,
+        total_amount:totalAmount,
+        total_price:totalPrices,
         o_total_price:$(".shopping-cart .dish-price"),
         carts_data:{},
 
@@ -75,8 +75,7 @@ $(function() {
             this.o_total_price.html("￥"+this.total_price);
 
 
-            var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],price:0.00,amount:0};
-            cart_dish["price"] += parseFloat(dish_data["price"]);
+            var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],amount:$(".dish-operation .amount").html()};
             cart_dish["amount"] ++;
             this.carts_data[index] = cart_dish;
 
@@ -103,8 +102,7 @@ $(function() {
             this.total_price -= parseFloat(dish_data["price"]);
             this.o_total_price.html("￥"+this.total_price);
 
-            var cart_dish = this.carts_data[index];
-            cart_dish["price"] -= parseFloat(dish_data["price"]);
+            var cart_dish = this.carts_data[index] || {id:dish_data["id"],name:dish_data["name"],amount:$(".dish-operation .amount").html()};
             cart_dish["amount"] -- ;
             if (cart_dish['amount'] == 0) {
                 delete this.carts_data[index];

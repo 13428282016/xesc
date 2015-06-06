@@ -135,6 +135,7 @@
                 <p>支付方式: {{$orderinfo['pay_type']}}</p>
                 <p>手机号码: {{$orderinfo['recv_contact']}}</p>
                 <p>收餐地址: {{$orderinfo['recv_address']}}</p>
+                <p>备注: {{$orderinfo['remark']}}</p>
             </div>
 
         </div>
@@ -147,17 +148,17 @@
 
                     <div class="am-u-sm-7">
                         <div class="dish-name">
-                            {{$dish['dishes_name']}}
+                            {{$dish['name']}}
                         </div>
                     </div>
                     <div class="am-u-sm-5">
 
                         <div class="am-g">
                             <div class="am-u-sm-4" style="padding: 0px;  text-align: center;">
-                                x{{$dish['dishes_amount']}}
+                                x{{$dish->pivot->dishes_amount}}
                             </div>
                             <div class="am-u-sm-8 dish-price" style="text-align: right">
-                                ￥{{$dish['dishes_price']}}
+                                ￥{{$dish['pivot']['dishes_price']}}
                             </div>
                         </div>
                     </div>

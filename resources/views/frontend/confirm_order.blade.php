@@ -25,7 +25,7 @@
         padding-top: 10px;
     }
 
-    .am-container>.am-g {
+    .am-container form >.am-g {
         background-color: #ffffff;
         margin-bottom: 10px;
         margin-left: 0px;
@@ -44,18 +44,35 @@
     }
 
     .am-container .address>div {
-        display: inline-block;
+        /*display: inline-block;*/
     }
 
     .am-container .address .address-details {
         color: #333333;
-        font-size: 1.2em;
+        width: 70%;
+        /*text-align: center;*/
+        float: left;
+        /*line-height: 70px;*/
+        margin-left: 15px;
+        height: 70px;
+        line-height: 35px;
+    }
+
+    .am-container .address .address-details .address-info {
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+    }
+
+    .am-container .address .address-details .user-info .username {
+        margin-right: 15px;
     }
 
     .am-container .address-icon {
         margin-left: 10px;
         line-height: 70px;
         width: 25px;
+        float: left;
     }
 
     .am-container .address .right-arrow {
@@ -64,6 +81,13 @@
         margin-right: 15px;
         line-height: 70px;
     }
+
+
+    .am-container .address .address-details .no-addresses-notes {
+
+
+    }
+
 
 
     /* */
@@ -138,81 +162,88 @@
 
 <div class="am-container">
 
+    <form action="/order/make-order" method="post">
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="am-g">
-        <a href="/address/add-address-view">
-            <div class="address">
-
-                <div class="address-icon">
-                    <img width="25" src="{{asset('/image/frontend/siderbar_myaddresses.png')}}">
-                </div>
-                <div class="address-details" style="  padding-left: 25%;">
-                    <div class="no-addresses-notes">
-                        请添加地址
-                    </div>
-                </div>
-
-                <span class="right-arrow"> <img width="9" src="{{asset('/image/frontend/orderconfirm_right_gray_arrow.png')}}"></span>
-
+        <div class="address">
+            <div class="address-icon">
+                <img width="25" src="{{asset('/image/frontend/siderbar_myaddresses.png')}}">
             </div>
-        </a>
+                <div class="address-details" >
+
+                    @if($userAddress)
+                    <input type="hidden" name="addressId" value="{{$userAddress['id']}}">
+                    <div class="address-info">
+                        <nobr>{{$userAddress["address"]}}</nobr><br/>
+                    </div>
+                    <div class="user-info">
+                        <span class="username">{{$userAddress["name"]}}</span> <span class="cellphone">{{$userAddress['cellphone']}}</span>
+                    </div>
+                    @else
+                    <a href="/address/add-address-view">
+                        <div class="no-addresses-notes" style="color: #333333;">
+                         请添加地址
+                        </div>
+                    </a>
+                    @endif
+                </div>
+            <span class="right-arrow"> <img width="9" src="{{asset('/image/frontend/orderconfirm_right_gray_arrow.png')}}"></span>
+        </div>
     </div>
 
-
     <div class="am-g remark">
-            备注:<input name="remark" style="border: 0px" placeholder="添加备注">
+        <span style="vertical-align: middle;">备注:</span>
+         <input name="remark" style="border: 0px" placeholder="添加备注">
     </div>
 
     <div>支付方式</div>
 
-   <div class="am-g payment-ways">
-       <div class="am-u-sm-12 online-pay">
-           <input id="onlinepay" name="pay_type" type="radio" style="display: none" value="1">
-           <label name="onlinepay" for="onlinepay" class="checked">在线支付</label>
-       </div>
+    <div class="am-g payment-ways">
        <div class="am-u-sm-12 arrival-pay">
-           <input id="arrivalpay" name="pay_type" type="radio" style="display: none" value="2">
-           <label name="arrivalpay" for="arrivalpay">餐到付款</label>
+           <label name="arrivalpay" for="arrivalpay" class="checked">餐到付款</label>
        </div>
+       <input id="arrivalpay" name="pay_type" type="hidden" value="1"/>
    </div>
 
     <div class="am-g dishes">
         <div class="dish">
             订单总计
-            <span class="total_price">￥88888</span>
+            <input type="hidden" name="price" value="{{$total_price}}">
+            <span class="total_price">￥{{$total_price}}</span>
         </div>
-        @foreach ($carts_data as $dishes)
+        @foreach ($userDishes as $dish)
 
-        <div id="{{$dishes['id']}}" class="am-g dish">
+        <div class="am-g dish">
 
             <div class="am-u-sm-8">
                 <div class="dish-name">
-                    {{$dishes['name']}}
+                    {{$dish->name}}
                 </div>
             </div>
             <div class="am-u-sm-4">
 
                 <div class="am-g">
                     <div class="am-u-sm-4" style="padding: 0px;  text-align: center;">
-                        x{{$dishes['amount']}}
+                        x{{$dish->pivot->dishes_amount}}
                     </div>
                     <div class="am-u-sm-8 dish-price" style="text-align: right">
-                        ￥{{$dishes['price']}}
+                        ￥{{$dish->price*$dish->pivot->dishes_amount}}
                     </div>
                 </div>
             </div>
 
         </div>
 
-    @endforeach
+        @endforeach
     </div>
     <!-- 底栏 -->
     <div data-am-widget="navbar" class="am-navbar am-cf " id="" style="z-index: 1009">
         <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
             <div class="am-g">
                 <div class="am-u-sm-12">
-                    <a class="am-btn"  id="make_order_btn" style="  line-height: 35px;">
+                    <button class="am-btn" type="submit"  id="make_order_btn" style="  line-height: 35px;background-color: transparent">
                         立即下单
-                    </a>
+                    </button>
                 </div>
                 <div class="background" style="  position: absolute;left: -1px;
   width: 101%;
@@ -222,6 +253,7 @@
             </div>
         </div>
     </div>
+    </form>
     <!-- 底栏 -->
     {{--<form method="post" id="make_order_form" action="/order/make_order" style="">--}}
         {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}

@@ -18,10 +18,15 @@ class Order extends Model {
     const  STATUS_CANCEL=10;
 
 
+
+
     protected $table = 'orders';
     public function user()
     {
         return $this->belongsTo('xesc\User');
+    }
+    public function dishes() {
+        return $this->belongsToMany('xesc\Dishes','order_dishes_mid')->withPivot('dishes_amount','dishes_price');
     }
 
 }

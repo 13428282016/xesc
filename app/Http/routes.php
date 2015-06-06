@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'IndexController@index');
+//Route::get('/', 'IndexController@index');
 
 //Route::get('home', 'HomeController@index');
 
@@ -52,6 +52,7 @@ Route::group(['middleware'=>'openID'],function(){
     Route::controllers([
        'order'=>'ucenter\OrderController',
         'cart'=>'ucenter\CartController',
+        '/' => 'IndexController'
     ]);
 
 });

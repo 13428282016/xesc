@@ -1,6 +1,8 @@
 <?php namespace xesc\Http\Controllers;
 
 use xesc\Dishes;
+use xesc\Cart;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller {
 
@@ -30,10 +32,24 @@ class IndexController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function getIndex(Request $request)
 	{
-		$dishes = Dishes::all();
-		return view('frontend/home',['dishes' => $dishes]);
+		$dishes = Dishes::all()->toArray();
+
+		$user=$request->session()->get('user');
+		$userDishes  =$user->cart->dishes()->get();
+		$totalPrice  = 0.00;
+		$totalAmount = 0;
+		$cartDishes  = array();
+		foreach($userDishes as $id => $dish) {
+			$cartDishes[$dish['id']] = $dish->pivot->toArray();
+			$totalPrice  += $dish->price * $dish->pivot->dishes_amount;
+			$totalAmount += $dish->pivot->dishes_amount;
+//			echo $dish->price." * ".$dish->pivot->dishes_amount." = ".$totalPrice."   <br/>";
+		}
+
+
+		return view('frontend/home',['dishes' => $dishes,'cartDishes' => $cartDishes,'totalPrice' => $totalPrice,'totalAmount' => $totalAmount]);
 	}
 
 }

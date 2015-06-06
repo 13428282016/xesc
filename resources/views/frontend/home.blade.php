@@ -45,7 +45,9 @@
 	}
 
 	.dish span {
-		padding: 0px 4px;
+		width: 30px;
+		display: inline-block;
+		text-align: center;
 	}
 
 	.dish span img {
@@ -104,7 +106,8 @@
 					{{$dishes[$i]['name']}}
 				</div>
 				<div class="dish-sales">
-					月售：912
+					{{--月售：912--}}
+					{{$dishes[$i]["id"]}}
 				</div>
 				<div class="dish-price">
 					￥{{$dishes[$i]['price']}}
@@ -113,8 +116,13 @@
 			</div>
 			<div class="dish-operation">
 
-				<span data-index="{{$i}}" class="minus" style="display: none"><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
-				<span  class="amount" style="display: none">0</span>
+				@if($cartDishes[$dishes[$i]['id']])
+					<span data-index="{{$i}}" class="minus" ><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
+					<span  class="amount" >{{$cartDishes[$dishes[$i]['id']]['dishes_amount']}}</span>
+				@else
+					<span data-index="{{$i}}" class="minus" style="display: none"><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
+					<span  class="amount" style="display: none">0</span>
+				@endif
 				<span data-index="{{$i}}" class="add"><img src="{{asset('/image/frontend/dish_add.png')}}"></span>
 
 			</div>
@@ -132,12 +140,21 @@
 
 			<!-- 总价钱 -->
 			<div class="am-u-sm-6 shopping-cart">
-				 <span class="dish-price" >￥0</span>
+				 <span class="dish-price" >￥{{$totalPrice}}</span>
 			</div>
 
 			<!-- 底部 所点的餐品份数 -->
 			<div class="dish-count" align="center">
-				<span class="value"><span class="total-amount"></span><img class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}"></span>
+				<span class="value">
+
+					@if($totalAmount)
+						<span class="total-amount">{{$totalAmount}}</span>
+						<img class="cart-icon" style="width: 20px;display: none" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
+					@else
+						<span class="total-amount"></span>
+						<img class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
+					@endif
+				</span>
 			</div>
 
 			<div class="am-u-sm-6">
@@ -163,6 +180,13 @@
 	<input id="carts_data" type="hidden" name="carts_data" value="">
 
 </form>
+
+<script>
+
+	var totalPrices = {{$totalPrice}};
+	var totalAmount = {{$totalAmount}};
+
+</script>
 
 <script src="{{asset('/js/frontend/index.js')}}"></script>
 

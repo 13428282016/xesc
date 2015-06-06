@@ -11,5 +11,6 @@ class OrdersDishes extends Model {
      * @var string
      */
     protected $table = 'order_dishes_mid';
+    public $timestamps = false;
 
 }
