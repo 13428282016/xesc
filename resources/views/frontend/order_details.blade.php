@@ -71,7 +71,8 @@
 
 
         .dishes .total-price {
-            padding: 5px 10px;
+            padding: 5px 0px;
+            margin: 0px;
         }
 
         .dishes .total-price .value {
@@ -84,6 +85,19 @@
         }
 
 
+        /* 弹出确认框 */
+        .am-modal-hd {
+            padding: 15px 10px 15px;
+            font-size: 1.8rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        #confirm_recv .am-modal-dialog {
+            -webkit-border-radius: 15px;
+            -moz-border-radius: 15px;
+            border-radius: 15px;
+        }
+        
     </style>
 
     <header data-am-widget="header" class="am-header am-header-fixed">
@@ -173,14 +187,16 @@
 
         </div>
 
+        @if($orderinfo['status'] < 4)
         <!-- 底栏 -->
         <div data-am-widget="navbar" class="am-navbar am-cf " id="" style="z-index: 1009">
             <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
                 <div class="am-g">
                     <div class="am-u-sm-12">
-                        <a class="am-btn"  id="recieved_order_btn" style="  line-height: 35px;">
+                        <button class="am-btn"  id="doc-confirm-toggle" style=" background-color: transparent;line-height: 35px;">
+
                             确认收餐
-                        </a>
+                        </button>
                     </div>
                     <div class="background" style="  position: absolute;left: -1px;width: 101%;z-index: -1;">
                         <img style="width: 100%" src="{{asset('/image/frontend/address_bottombar_bg.png')}}">
@@ -190,6 +206,46 @@
         </div>
         <!-- 底栏 -->
 
+        <div class="am-modal am-modal-confirm" tabindex="-1" id="confirm_recv">
+            <div class="am-modal-dialog">
+                <div class="am-modal-hd">确认收餐</div>
+                {{--<div class="am-modal-bd">--}}
+
+                {{--</div>--}}
+                <div class="am-modal-footer">
+                    <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                    <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                </div>
+            </div>
+        </div>
+
+        <form id="confirmRecv" action="/order/confirm-recv" method="post">
+
+            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+            <input type="hidden" name="order_id" value="{{$orderinfo->id}}">
+
+        </form>
+
+
+    <script>
+        $(function() {
+            $('#doc-confirm-toggle').click(function() {
+                $('#confirm_recv').modal({
+                    relatedTarget: this,
+                    onConfirm: function(options) {
+                        $('#confirmRecv').submit();
+                    },
+                    onCancel: function() {
+                    }
+                });
+            });
+        });
+    </script>
+    @endif
+
     </div>
+
+
+
 
 @endsection

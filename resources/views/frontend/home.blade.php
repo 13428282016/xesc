@@ -24,7 +24,7 @@
 		margin-top: 3px;
 	}
 
-	.dish-price {
+	.dish-price-red {
 		color:#ff2828;
 		font-size: 16px;
 		font-family: arial;
@@ -86,6 +86,8 @@
 		color: #ffffff;
 	}
 
+
+	/* 购物车 */
 #cart-panel
 {
 
@@ -138,8 +140,15 @@ top:-315px;
 {
 top:-21px;
 }
+	/* 购物车 */
 
 
+	/* 弹出确认框 */
+	#no-dishes-alert .am-modal-dialog {
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+	}
 
 </style>
 
@@ -157,8 +166,7 @@ top:-21px;
 					{{$dishes[$i]['name']}}
 				</div>
 				<div class="dish-sales">
-					{{--月售：912--}}
-					{{$dishes[$i]["id"]}}
+					月售：{{$dishes[$i]['sales']}}
 				</div>
 				<div class="dish-price">
 					￥{{$dishes[$i]['price']}}
@@ -193,7 +201,7 @@ top:-21px;
 
 			<!-- 总价钱 -->
 			<div class="am-u-sm-6 shopping-cart">
-				 <span class="dish-price" >￥{{$totalPrice}}</span>
+				 <span class="dish-price-red">￥</span><span class="dish-price-red dish-price" >{{$totalPrice}}</span>
 			</div>
 
 			<!-- 底部 所点的餐品份数 -->
@@ -240,6 +248,18 @@ top:-21px;
 
 				  </div>
 				</div>
+
+<div class="am-modal am-modal-alert" tabindex="-1" id="no-dishes-alert">
+	<div class="am-modal-dialog">
+		<div class="am-modal-bd">
+			先点几个菜吧
+		</div>
+		<div class="am-modal-footer">
+			<span class="am-modal-btn">确定</span>
+		</div>
+	</div>
+</div>
+
 <script>
 
 	var totalPrices = {{$totalPrice}};
