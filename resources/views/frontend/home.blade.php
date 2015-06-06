@@ -1,6 +1,4 @@
-@extends('layout.index')
-@extends('layout.index_header')
-@extends('layout.index_bottombar')
+@extends('layout.default')
 
 @section('content')
 
@@ -98,7 +96,7 @@
 
 	@for($i = 0;$i < count($dishes);$i++)
 
-		<div id="{{$i}}" class="am-g dish">
+		<div  class="am-g dish">
 
 			<img class="dish-image" style="float: left" width="85" src="{{asset('/image/frontend/dish_paigu.png')}}">
 			<div class="dish-details">
@@ -116,7 +114,7 @@
 			</div>
 			<div class="dish-operation">
 
-				@if($cartDishes[$dishes[$i]['id']])
+				@if($cartDishes && $cartDishes[$dishes[$i]['id']])
 					<span data-index="{{$i}}" class="minus" ><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
 					<span  class="amount" >{{$cartDishes[$dishes[$i]['id']]['dishes_amount']}}</span>
 				@else
@@ -149,7 +147,7 @@
 
 					@if($totalAmount)
 						<span class="total-amount">{{$totalAmount}}</span>
-						<img class="cart-icon" style="width: 20px;display: none" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
+						<img id="cart-btn" class="cart-icon" style="width: 20px;display: none" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
 					@else
 						<span class="total-amount"></span>
 						<img class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">

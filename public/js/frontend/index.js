@@ -121,6 +121,9 @@ $(function() {
             $('#carts_data').val(JSON.stringify(this.carts_data));
             $('#confirm_order').submit();
 
+        },
+        displayCart:function(){
+            
         }
 
     };
