@@ -11,12 +11,16 @@ class Order extends Model {
      * @var string
      */
 
-    /** 订单状态 */
-    const  STATUS_WAITTING_PAY = 1;
-    const  STATUS_DOING    = 2;
-    const  STATUS_SHIPPING = 3;
-    const  STATUS_FINISHED = 4;
-    const  STATUS_CANCEL   = 10;
+
+     const  STATUS_WAITTING_PAY=1;
+      const  STATUS_DOING=2;
+      const  STATUS_SHIPPING=3;
+    const  STATUS_FINISHED=4;
+    const  STATUS_CANCEL=10;
+    const STATUS_ALL=20;
+
+
+
 
     /** 餐到付款 */
     const PAYTYPE_ARRIVAL = 1;

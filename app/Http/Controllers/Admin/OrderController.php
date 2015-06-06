@@ -13,11 +13,45 @@ class OrderController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		//
-        $orders=Order::all();
-        return view('',['orders'=>$orders]);
+        $args=$request->only(['type']);
+        switch($args['type'])
+        {
+            case Order::STATUS_WAITTING_PAY:
+                $orders =Order::where('status',Order::STATUS_WAITTING_PAY)->get();
+                break;
+            case Order::STATUS_DOING:
+                $orders =Order::where('status',Order::STATUS_DOING)->get();
+                break;
+            case Order::STATUS_SHIPPING:
+                $orders =Order::where('status',Order::STATUS_SHIPPING)->get();
+                break;
+            case Order::STATUS_FINISHED:
+                $orders =Order::where('status',Order::STATUS_FINISHED)->get();
+                break;
+            case Order::STATUS_CANCEL:
+                $orders =Order::where('status',Order::STATUS_CANCEL)->get();
+                break;
+            case Order::STATUS_ALL:
+                $orders=Order::all();
+                break;
+            default:
+                $args['type']=Order::STATUS_WAITTING_PAY;
+                $orders =Order::where('status',Order::STATUS_WAITTING_PAY)->get();
+
+
+
+
+        }
+        $ordersAmount[Order::STATUS_WAITTING_PAY]=Order::where('status',Order::STATUS_WAITTING_PAY)->count();
+        $ordersAmount[Order::STATUS_DOING]=Order::where('status',Order::STATUS_DOING)->count();
+        $ordersAmount[Order::STATUS_SHIPPING]=Order::where('status',Order::STATUS_SHIPPING)->count();
+        $ordersAmount[Order::STATUS_FINISHED]=Order::where('status',Order::STATUS_FINISHED)->count();
+        $ordersAmount[Order::STATUS_CANCEL]=Order::where('status',Order::STATUS_CANCEL)->count();
+        $ordersAmount[Order::STATUS_ALL]=Order::count();
+        return view('admin.order.index',['orders'=>$orders,'ordersAmount'=>$ordersAmount,'type'=>$args['type']]);
 	}
 
 	/**

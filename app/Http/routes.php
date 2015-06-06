@@ -38,6 +38,7 @@ Route::group(['middleware'=>'admin'],function(){
             'admin/user'=>'Admin\UserController'
         ]
     );
+    Route::get('admin','Admin\HomeController@index');
 
 });
 

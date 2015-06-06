@@ -167,7 +167,9 @@ top:-21px;
 			</div>
 			<div class="dish-operation">
 
+
 				@if($cartDishes && isset($cartDishes[$dishes[$i]['id']]))
+
 					<span data-index="{{$i}}" class="minus" ><img src="{{asset('/image/frontend/dish_minus.png')}}"></span>
 					<span  class="amount" >{{$cartDishes[$dishes[$i]['id']]['dishes_amount']}}</span>
 				@else

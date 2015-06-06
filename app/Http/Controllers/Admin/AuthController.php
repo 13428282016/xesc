@@ -31,7 +31,7 @@ class AuthController extends Controller {
     {
         if($this->isLogin())
         {
-            return redirect('admin/home');
+            return redirect('admin');
         }
 
         return View('admin.auth.login');
@@ -50,7 +50,7 @@ class AuthController extends Controller {
         if($this->check($admin))
         {
             $this->login($admin);
-            return redirect('admin/home');
+            return redirect('admin');
         }
         else
         {
