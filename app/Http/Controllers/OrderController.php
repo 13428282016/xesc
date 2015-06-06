@@ -3,7 +3,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use xesc\Order;
 use xesc\Carts;
-use xesc\Dishes;
 use xesc\OrdersDishes;
 class OrderController extends Controller {
 
@@ -26,7 +25,6 @@ class OrderController extends Controller {
 
 	public function __construct()
 	{
-
 
 	}
 
@@ -81,11 +79,16 @@ class OrderController extends Controller {
 		$user 		= $request->session()->get('user');
 		$userDishes = $user->cart->dishes()->get();
 
-		if (!$userDishes) {
-			Redirect::to("/");
+		if (empty($userDishes)) {
+			return Redirect::to("/");
 		}
 
 		$userAddress = $user->recvAddrs()->find($request->input('addressId'));
+		$total_price = 0;
+
+		foreach($userDishes as $index => $dish) {
+			$total_price += $dish->price * $dish->pivot->dishes_amount;
+		}
 
 		$order = new Order();
 		$order->recv_address   = $userAddress->address;
@@ -94,7 +97,7 @@ class OrderController extends Controller {
 		$order->recv_sex       = $userAddress->sex;
 		$order->pay_type       = $request->input('pay_type');
 		$order->remark		   = $request->input('remark');
-		$order->price		   = $request->input('price');
+		$order->price		   = $total_price;
 		$order->status		   = Order::STATUS_SUBMITTED;
 		$order->order_no       = time();
 		$order->buyer_id       = $user->id;
@@ -118,13 +121,12 @@ class OrderController extends Controller {
 
 		return Redirect::to('/order/orders-view');
 
-//		return  view('frontend/order_details',['title' => '订单详细','orderinfo' => $order]);
-
 	}
 
 	public function postConfirmRecv(Request $request) {
 
-		Order::where('id','=',$request->input('order_id'))->update(['status' => 4]);
+
+		Order::where('id','=',$request->input('order_id'))->update(['status' => Order::STATUS_FINISHED]);
 		return Redirect::to('order/order-details-view?order_id='.$request->input('order_id'));
 
 	}

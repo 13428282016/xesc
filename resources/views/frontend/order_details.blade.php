@@ -1,5 +1,6 @@
 @extends('layout.index')
 
+
 @section('content')
 
     <style>
@@ -91,7 +92,7 @@
             font-size: 1.8rem;
             border-bottom: 1px solid #e0e0e0;
         }
-        
+
         #confirm_recv .am-modal-dialog {
             -webkit-border-radius: 15px;
             -moz-border-radius: 15px;
@@ -123,18 +124,17 @@
         <div class="am-g order-status">
 
             <div align="center">
-                @if($orderinfo['status'] == 1)
+
+                @if($orderinfo['status'] == xesc\Order::STATUS_SUBMITTED)
                     <img width="94%" src="{{asset('/image/frontend/order_details_submit_order.png')}}">
-                @elseif($orderinfo['status'] == 2)
+                @elseif($orderinfo['status'] == xesc\Order::STATUS_DOING)
                     <img width="94%" src="{{asset('/image/frontend/order_details_confirm_order.png')}}">
-
-                @elseif($orderinfo['status'] == 3)
+                @elseif($orderinfo['status'] == xesc\Order::STATUS_SHIPPING)
                     <img width="94%" src="{{asset('/image/frontend/order_details_delivering.png')}}">
-
                 @else
                     <img width="94%" src="{{asset('/image/frontend/order_details_recieved.png')}}">
-
                 @endif
+
             </div>
 
         </div>
