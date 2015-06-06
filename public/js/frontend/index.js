@@ -20,6 +20,7 @@ $(function() {
         o_total_price:$(".shopping-cart .dish-price"),
         carts_data:{},
 
+
         init:function(){
 
             var self = this;
@@ -59,6 +60,7 @@ $(function() {
             $('#payment_button').click(function(){
                 self.confirm_order();
             });
+            $('span.value').click(self.toggleCart);
 
         },
         // 加一份菜
@@ -122,8 +124,24 @@ $(function() {
             $('#confirm_order').submit();
 
         },
-        displayCart:function(){
-            
+        toggleCart:function(){
+
+
+            if($('#cart-panel').hasClass('down'))
+            {
+                $('#cart-panel,#cart').addClass('up').removeClass('down');
+            }
+
+            else
+            {
+                $('#cart-panel,#cart').addClass('down').removeClass('up');
+            }
+
+            //$.post('/cart/dishes',{_token:$('csrf_totken').val()}, function (data) {
+            //
+            //
+            //
+            //})
         }
 
     };

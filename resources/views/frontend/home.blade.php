@@ -86,6 +86,55 @@
 		color: #ffffff;
 	}
 
+#cart-panel
+{
+
+position: fixed;
+bottom: -350px;
+ height: 350px;
+ 
+  transition:bottom 1s;
+  overflow: hidden;
+  width: 100%;
+
+
+
+
+
+
+}
+#cart-panel img:first-child
+{
+   width: 100%;
+   height: 25px;
+
+}
+#cart-panel .content
+{
+   height: 300px;
+   background: #ffffff;
+}
+#cart-panel.up{
+
+ bottom: 0px;
+}
+#cart-panel.down
+{
+bottom: -350px;
+}
+#cart
+{
+ transition:1s  top;
+}
+#cart.up
+{
+top:-309px;
+}
+#cart.down
+{
+top:-21px;
+}
+
 
 
 </style>
@@ -142,7 +191,7 @@
 			</div>
 
 			<!-- 底部 所点的餐品份数 -->
-			<div class="dish-count" align="center">
+			<div id="cart" class="dish-count" align="center" >
 				<span class="value">
 
 					@if($totalAmount)
@@ -150,9 +199,10 @@
 						<img id="cart-btn" class="cart-icon" style="width: 20px;display: none" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
 					@else
 						<span class="total-amount"></span>
-						<img class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
+						<img id="cart-btn" class="cart-icon" style="width: 20px;" src="{{asset('/image/frontend/index_bottombar_cart.png')}}">
 					@endif
 				</span>
+
 			</div>
 
 			<div class="am-u-sm-6">
@@ -178,7 +228,12 @@
 	<input id="carts_data" type="hidden" name="carts_data" value="">
 
 </form>
+<div id="cart-panel" class="down">
+				  <img src="/image/frontend/index_cart.png">
+				  <div class="content">
 
+				  </div>
+				</div>
 <script>
 
 	var totalPrices = {{$totalPrice}};
