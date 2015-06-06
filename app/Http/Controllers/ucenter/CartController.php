@@ -63,6 +63,13 @@ class CartController extends Controller {
         $cart->dishes()->detach();
     }
 
+    public function getIndex(Request $request)
+    {
+        $user=$request->session()->get('user');
+            $dishes= $user->cart->dishes;
+        return view('cart/index',['dishes'=>$dishes]);
+    }
+
 
 
 }

@@ -13,7 +13,7 @@ class Dishes extends Model {
     protected $table = 'dishes';
     public function  carts()
     {
-        return $this->belongsToMany('xesc\cart','cart_dishes_mid');
+        return $this->belongsToMany('xesc\cart','cart_dishes_mid')->withPivot('dishes_amount');
     }
 
 

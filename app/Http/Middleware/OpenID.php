@@ -16,7 +16,7 @@ class OpenID {
 	public function handle($request, Closure $next)
 	{
 
-        if(!$request->session()->get('user'))
+        if(!($user=$request->session()->get('user')))
         {
             if(!$request->get('open_id'))
             {
@@ -29,6 +29,11 @@ class OpenID {
                 $user->last_ip=$request->ip();
                 $user->save();
             }
+            $request->session()->put('user',$user);
+        }
+        else
+        {
+            $user = User::find($user->id);
             $request->session()->put('user',$user);
         }
 
