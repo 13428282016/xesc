@@ -17,25 +17,31 @@ class OpenID {
 	public function handle($request, Closure $next)
 	{
 
+        $user=$request->session()->get('user');
+         if(!$user)
+         {
+             if(!$request->get('open_id'))
+             {
+                 abort(404);
+             }
+             $user=User::where('open_id',$request->get('open_id'))->get()->first();
+             if(empty($user))
+             {
+                 $user=new User();
+                 $user->open_id = $request->input('open_id');
+                 $user->last_ip=$request->ip();
+                 $user->save();
 
-            if(!$request->get('open_id'))
-            {
-                abort(404);
-            }
-            $user=User::where('open_id',$request->get('open_id'))->get()->first();
-            if(empty($user))
-            {
-                $user=new User();
-                $user->open_id = $request->input('open_id');
-                $user->last_ip=$request->ip();
-                $user->save();
-
-                $cart = new Cart();
-                $cart->user_id = $user->id;
-                $cart->save();
-            }
-
-            $request->session()->put('user',$user);
+                 $cart = new Cart();
+                 $cart->user_id = $user->id;
+                 $cart->save();
+             }
+         }
+        else
+        {
+           $user=User::find($user->id);
+        }
+        $request->session()->put('user',$user);
 
 
 		return $next($request);
