@@ -101,7 +101,7 @@
                 <div class="order-header">
                     <span class="created-time">{{$orderinfo['created_at']}}</span>
                     <span class="status">
-                        {{$orderinfo->orderStatus($orderinfo['status'])}}
+                        {{xesc\Order::orderStatus($orderinfo['status'])}}
                     </span>
                 </div>
                 <a href="/order/order-details-view?order_id={{$orderinfo['id']}}">

@@ -242,12 +242,12 @@ top:-21px;
 	<input id="carts_data" type="hidden" name="carts_data" value="">
 
 </form>
-<div id="cart-panel" class="down">
-				  <img src="/image/frontend/index_cart.png">
-				  <div class="content">
+{{--<div id="cart-panel" class="down">--}}
+				  {{--<img src="/image/frontend/index_cart.png">--}}
+				  {{--<div class="content">--}}
 
-				  </div>
-				</div>
+				  {{--</div>--}}
+				{{--</div>--}}
 
 <div class="am-modal am-modal-alert" tabindex="-1" id="no-dishes-alert">
 	<div class="am-modal-dialog">

@@ -1,6 +1,7 @@
 <?php namespace xesc\Http\Middleware;
 
 use Closure;
+use xesc\Cart;
 use xesc\Http\Requests\Request;
 use xesc\User;
 
@@ -24,12 +25,18 @@ class OpenID {
             $user=User::where('open_id',$request->get('open_id'))->get()->first();
             if(empty($user))
             {
-                $user=new User($request->only('open_id'));
+                $user=new User();
+                $user->open_id = $request->input('open_id');
                 $user->last_ip=$request->ip();
                 $user->save();
+
+                $cart = new Cart();
+                $cart->user_id = $user->id;
+                $cart->save();
             }
 
             $request->session()->put('user',$user);
+
 
 		return $next($request);
 	}
