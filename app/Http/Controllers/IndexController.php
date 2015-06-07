@@ -38,10 +38,12 @@ class IndexController extends Controller {
 
 		$user=$request->session()->get('user');
 		$userDishes  =$user->cart->dishes()->get();
+
 		$totalPrice  = 0.00;
 		$totalAmount = 0;
 		$cartDishes  = array();
 		foreach($userDishes as $id => $dish) {
+
 			$cartDishes[$dish['id']] = $dish->pivot->toArray();
 			$totalPrice  += $dish->price * $dish->pivot->dishes_amount;
 			$totalAmount += $dish->pivot->dishes_amount;

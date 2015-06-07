@@ -1,6 +1,7 @@
 <?php namespace xesc\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use xesc\Dishes;
 use xesc\Order;
 use xesc\Carts;
 use xesc\OrdersDishes;
@@ -79,7 +80,7 @@ class OrderController extends Controller {
 		$user 		= $request->session()->get('user');
 		$userDishes = $user->cart->dishes()->get();
 
-		if (empty($userDishes)) {
+		if (empty($userDishes) || count($userDishes) == 0) {
 			return Redirect::to("/");
 		}
 
@@ -125,8 +126,20 @@ class OrderController extends Controller {
 
 	public function postConfirmRecv(Request $request) {
 
+		$order = Order::find($request->input('order_id'));
+		if ($order->status != Order::STATUS_FINISHED) {
 
-		Order::where('id','=',$request->input('order_id'))->update(['status' => Order::STATUS_FINISHED]);
+			$order_dishes = OrdersDishes::where('order_id',$request->input('order_id'))->get();
+			foreach($order_dishes as $dishes) {
+				$dish = Dishes::find($dishes['dishes_id']);
+				$dish->sales += $dishes['dishes_amount'];
+				$dish->save();
+			}
+
+			$order->status = Order::STATUS_FINISHED;
+			$order->save();
+		}
+
 		return Redirect::to('order/order-details-view?order_id='.$request->input('order_id'));
 
 	}
