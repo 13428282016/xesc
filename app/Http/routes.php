@@ -40,7 +40,7 @@ Route::group(['middleware'=>'admin'],function(){
     );
     Route::get('admin','Admin\HomeController@index');
     Route::controllers([
-        'admin/order/{id}/'=>'Admin\OrderController'
+        'admin/order'=>'Admin\OrderController'
         ]);
 
 });

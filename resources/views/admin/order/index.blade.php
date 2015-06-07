@@ -59,10 +59,13 @@ div#orders .order .operation
   <br>
         @foreach($orders as $order)
         <div class="panel order panel-success">
+           <input class="order-id" type="hidden" value="{{$order->id}}">
           <!-- Default panel contents -->
           <div class="panel-heading clearfix ">
           <div class="left">
+
           <label>订单号：</label>
+
           <span>{{$order->order_no}}</span>
           </div>
           <div class="right">
@@ -112,14 +115,9 @@ div#orders .order .operation
             </tbody>
           </table>
           <div class="operation">
-
-
-              <button type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
-
-            <button type="button" class="btn @if($order->status!=\xesc\Order::STATUS_DOING)hide @endif btn-success " >配送</button>
-
-
-            <button type="button" class="btn btn-info @if($order->status==\xesc\Order::STATUS_FINISHED)hide @endif " >取消订单</button>
+            <button id="do-btn" type="button"  class="btn @if ($order->status!=\xesc\Order::STATUS_SUBMITTED)hide @endif btn-primary " >制作美食</button>
+            <button id="ship-btn"type="button" class="btn @if($order->status!=\xesc\Order::STATUS_DOING)hide @endif btn-success " >配送</button>
+            <button id="cancel-btn" type="button" class="btn btn-info @if($order->status==\xesc\Order::STATUS_FINISHED||$order->status==\xesc\Order::STATUS_CANCEL)hide @endif " >取消订单</button>
 
           </div>
         </div>
@@ -128,5 +126,51 @@ div#orders .order .operation
 
 
 </div>
+<script>
 
+var orderManager=(function(window,$){
+
+   var order;
+
+    order={
+
+      action:function(type)
+        {
+              var id= $(this).parents('.order').find('.order-id').val();
+                      console.log(this);
+                      $.post('{{url('admin/order/')}}/'+type,{_token:"{{csrf_token()}}",id:id},function(data){
+
+                         if(data.success)
+                         {
+                             location.reload();
+                         }
+                      });
+        },
+
+      init:function()
+      {
+
+         $('#do-btn').click(function()
+         {
+            order.action.call(this,'do');
+         });
+         $('#ship-btn').click(function()
+          {
+               order.action.call(this,'ship');
+           });
+         $('#cancel-btn').click(function()
+           {
+              order.action.call(this,'cancel');
+            });
+
+      }
+    }
+
+    order.init()
+
+    return order;
+
+})(window,$);
+
+</script>
 @endsection

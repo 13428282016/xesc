@@ -5,5 +5,6 @@
     <li role="presentation" class="active"><a href="{{url('admin/dishes')}}">美食管理</a></li>
     <li role="presentation"><a href="{{url('admin/order')}}">订单管理</a></li>
     <li role="presentation"><a href="{{url('admin/user')}}">用户管理</a></li>
+        <li role="presentation"><a href="{{url('admin/auth/logout')}}">登出</a></li>
 </ul>
 @endsection

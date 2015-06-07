@@ -47,6 +47,8 @@ class Order extends Model {
                 return "配送中";
             case self::STATUS_FINISHED :
                 return "已收餐";
+            case self::STATUS_CANCEL:
+                return "已取消";
 
         }
         return "";

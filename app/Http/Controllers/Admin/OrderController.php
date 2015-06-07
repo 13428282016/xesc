@@ -127,7 +127,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_DOING;
         if($order->save())
         {
-            return redirect()->back();
+            return ["success"=>true];
         }
 
     }
@@ -139,7 +139,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_SHIPPING;
         if($order->save())
         {
-            return redirect()->back();
+            return ["success"=>true];
         }
     }
 
@@ -150,7 +150,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_CANCEL;
         if($order->save())
         {
-            return redirect()->back();
+            return ["success"=>true];
         }
     }
 
