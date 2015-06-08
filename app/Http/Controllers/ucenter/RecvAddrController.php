@@ -72,8 +72,13 @@ class RecvAddrController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		//
+            
         $formData=$request->only(['address','cellphone','name']);
+
+        $checkAddr = RecvAddr::where('address','=',$formData['address'])->get();
+        if (!empty($checkAddr) && count($checkAddr)) {
+           return Redirect::to('recvaddr/create')->withInput()->withError('该地址已添加');
+        }
 
         $addr= new RecvAddr($formData);
         $addr->sex= $request->get('sex')==1?RecvAddr::SEX_MAN:RecvAddr::SEX_WOMEN;

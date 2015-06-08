@@ -122,7 +122,7 @@ $(function() {
         },
         confirm_order:function() {
 
-            $('#carts_data').val(JSON.stringify(this.carts_data));
+            //$('#carts_data').val(JSON.stringify(this.carts_data));
 
             if (this.total_price > 0) {
                 $('#confirm_order').submit();

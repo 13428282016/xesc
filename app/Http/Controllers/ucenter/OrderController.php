@@ -5,100 +5,110 @@ use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use xesc\Order;
+use xesc\User;
+use xesc\OrdersDishes;
+use xesc\Dishes;
+
+use Illuminate\Support\Facades\Redirect;
 
 class OrderController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
+     * 显示订单列表主页
 	 *
 	 * @return Response
 	 */
 	public function index(Request $request)
 	{
-		//
-        $args=$request->only(['open_id','addr_id']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $orders=$user->orders;
-        return view('')->with('orders',$orders);
+        $user = $request->session()->get('user');
+        return view('frontend/order',['title' => '订单','orderinfos' => $user->orders()->orderBy('created_at','desc')->get()]);
 	}
 
 	/**
 	 * Show the form for creating a new resource.
+     * 显示确认订单主页
 	 *
 	 * @return Response
 	 */
 	public function create(Request $request)
 	{
-		//
-        $args=$request->only(['open_id','addr_id']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $cart=$user->cart;
-        if($args['addr_id'])
-        {
-            $defaultAddr=$user->recvAddrs()->where('id',$args['addr_id']);
-        }
-        else
-        {
-            $defaultAddr=$user->recvAddrs()->where('is_default',true);
+        $user = $request->session()->get('user');
+        $userDishes  =$user->cart->dishes()->get();
+        $userAddress = $user->recvAddrs()->where('is_default','=',1)->first();
+
+        $total_price = 0;
+        foreach($userDishes as $userDish) {
+            $total_price += $userDish->price * $userDish->pivot->dishes_amount;
         }
 
-        return view('',['default_addr'=>$defaultAddr,'dishes'=>$cart->dishes]);
+        $params = array(
+            'title'		  => '订单确认',
+            'userDishes'  => $userDishes,
+            'total_price' => $total_price,
+            'userAddress' => $userAddress
+        );
+
+        return view('frontend/confirm_order',$params);
 	}
 
 	/**
 	 * Store a newly created resource in storage.
+     * 生成订单操作
 	 *
 	 * @return Response
 	 */
 	public function store(Request $request)
 	{
-		//
 
-        $args=$request->only(['open_id','addr_id','remark']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $cart=$user->cart;
-        $dishes=$cart->dishes;
-        $addr=$user->addrs()->where('id',$args['addr_id'])->first();
-        $order=new Order();
-        $order->recv_address=$addr->address;
-        $order->recv_name=$addr->name;
-        $order->recv_concact=$addr->cellphone;
-        $order->recv_sex=$addr->sex;
-        $order->remark=$args['remark'];
-        $order->price='';
-        $order->buyer_id=$user->id;
-        $order->freight=0;
-        $order->status=Order::STATUS_WAITTING_PAY;
-        $sum=0;
-        foreach($dishes as $dish)
-        {
-            $sum+=$dish->price*$dish->pivot->dishes_amount;
+        $user 		= $request->session()->get('user');
+        $userDishes = $user->cart->dishes()->get();
+
+        if (empty($userDishes) || count($userDishes) == 0) {
+            return Redirect::to("/");
         }
-        $order->price=$sum;
+
+        $userAddress = $user->recvAddrs()->find($request->input('addressId'));
+        $total_price = 0;
+        foreach($userDishes as $index => $dish) {
+            $total_price += $dish->price * $dish->pivot->dishes_amount;
+        }
+
+        $order = new Order();
+        $order->recv_address   = $userAddress->address;
+        $order->recv_name      = $userAddress->name;
+        $order->recv_cellphone = $userAddress->cellphone;
+        $order->recv_sex       = $userAddress->sex;
+        $order->pay_type       = $request->input('pay_type');
+        $order->remark		   = $request->input('remark');
+        $order->price		   = $total_price;
+        $order->status		   = Order::STATUS_SUBMITTED;
+        $order->order_no       = time();
+        $order->buyer_id       = $user->id;
         $order->save();
 
-        foreach($dishes as $dish)
-        {
-            $order->dishes()->attach($dish->id,['dishes_amount'=>$dish->pivot->dishes_amount,'dishes_price'=>$dish->price,'dishes_name'=>$dish->name]);
+        foreach ($userDishes as $dish) {
+            $order->dishes()->attach($dish->id,['dishes_amount' => $dish->pivot->dishes_amount,'dishes_name' => $dish->name,'dishes_price'=>$dish->price,'dishes_image'=>$dish->image]);
         }
 
+        $cart=$user->cart;
+        $cart->dishes()->detach();
+
+        return Redirect::to('/order');
 
 	}
 
 	/**
 	 * Display the specified resource.
+     * 订单详情页
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
 	public function show($id,Request $request)
 	{
-		//
-        $args=$request->only(['open_id']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $order=$user->orders()->where('id',$id)->get()->first();
-        return view('',['order',$order]);
-
+        $user = $request->session()->get('user');
+        return view('frontend/order_details',['title' => '订单详细','orderinfo' => $user->orders()->find($id)]);
 	}
 
 	/**
@@ -135,21 +145,34 @@ class OrderController extends Controller {
 		//
 	}
 
-    public function  cancel(Request $request)
-    {
-        $args=$request->only(['open_id','id']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $order=$user->orders()->where('id',$args['id'])->get()->first();
-        $order->status=Order::STATUS_CANCEL;
-    }
-    public function  comfirm(Request $request)
-    {
-        $args=$request->only(['open_id','id']);
-        $user=User::where('open_id',$args['open_id'])->get()->first();
-        $order=$user->orders()->where('id',$args['id'])->get()->first();
-        $order->status=Order::STATUS_FINISHED;
+    public function postConfirmRecv(Request $request) {
+
+        $order = Order::find($request->input('order_id'));
+        if ($order->status != Order::STATUS_FINISHED) {
+
+            $order_dishes = OrdersDishes::where('order_id',$request->input('order_id'))->get();
+            foreach($order_dishes as $dishes) {
+                $dish = Dishes::find($dishes['dishes_id']);
+                $dish->sales += $dishes['dishes_amount'];
+                $dish->save();
+            }
+            $order->status = Order::STATUS_FINISHED;
+            $order->save();
+        }
+        return Redirect::to('order/'.$request->input('order_id'));
+
     }
 
+    public function postChooseAddr(Request $request) {
 
+        $user = $request->session()->get('user');
+        $user->recvAddrs()->update(['is_default' => 0]);
+        $userAddress = $user->recvAddrs()->find($request->input('addressId'));
+        $userAddress->is_default = 1;
+        $userAddress->save();
+
+        return Redirect::to('order/create');
+
+    }
 
 }

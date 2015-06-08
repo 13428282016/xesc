@@ -236,10 +236,10 @@ top:-21px;
 
 </div>
 
-<form id="confirm_order" action="/order/confirm-order-view" method="get" >
+<form id="confirm_order" action="/order/create?open_id={{$open_id}}" method="get" >
 
 	<input id="csrf_totken" type="hidden" name="_token" value="{{ csrf_token() }}">
-	<input id="carts_data" type="hidden" name="carts_data" value="">
+	{{--<input id="carts_data" type="hidden" name="carts_data" value="">--}}
 
 </form>
 {{--<div id="cart-panel" class="down">--}}

@@ -24,7 +24,6 @@ class IndexController extends Controller {
 	 */
 	public function __construct()
 	{
-
 	}
 
 	/**
@@ -35,7 +34,6 @@ class IndexController extends Controller {
 	public function index(Request $request)
 	{
 		$dishes = Dishes::all()->toArray();
-
 		$user=$request->session()->get('user');
 		$userDishes  =$user->cart->dishes()->get();
 
@@ -47,10 +45,10 @@ class IndexController extends Controller {
 			$cartDishes[$dish['id']] = $dish->pivot->toArray();
 			$totalPrice  += $dish->price * $dish->pivot->dishes_amount;
 			$totalAmount += $dish->pivot->dishes_amount;
-//			echo $dish->price." * ".$dish->pivot->dishes_amount." = ".$totalPrice."   <br/>";
 		}
 
-		return view('frontend/home',['dishes' => $dishes,'cartDishes' => $cartDishes,'totalPrice' => $totalPrice,'totalAmount' => $totalAmount]);
+		return view('frontend/home',['dishes' => $dishes,'cartDishes' => $cartDishes,'totalPrice' => $totalPrice,'totalAmount' => $totalAmount,'open_id' => $request->input('open_id')]);
 	}
+
 
 }

@@ -21,11 +21,10 @@
 
 
 Route::controllers([
-	'order'=> 'OrderController',
     'admin/auth'=>'Admin\AuthController',
 
 ]);
-Route::get('/','IndexController@index');
+Route::get('/', ['middleware' => 'openID','uses'=>'IndexController@index']);
 
 
 Route::group(['prefix'=>'admin','middleware'=>'admin','namespace'=>'Admin'],function(){
@@ -52,7 +51,8 @@ Route::group(['middleware'=>'openID','namespace'=>'ucenter'],function(){
         ]
     );
     Route::controllers([
-       'order'=>'OrderController',
+        'order'=>'OrderController',
+
         'cart'=>'CartController',
 
     ]);

@@ -163,6 +163,11 @@
     .am-navbar .am-navbar-nav .am-btn {
         color: #ffffff;
     }
+
+    .dish .am-u-sm-4 {
+        padding-left:0px;
+    }
+
 </style>
 
 <header data-am-widget="header" class="am-header am-header-fixed">
@@ -180,7 +185,7 @@
 
 <div class="am-container">
 
-    <form id="make-order-form" action="/order/make-order" method="post">
+    <form id="make-order-form" action="/order" method="post">
     <input type="hidden" name="_token" value="{{csrf_token()}}">
     <div class="am-g">
         <div class="address">

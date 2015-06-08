@@ -81,7 +81,7 @@
                         <span><img width="25" src="{{asset('/image/frontend/siderbar_myaddresses.png')}}"><a href="{{url('recvaddr')}}">我的送餐地址</a></span>
                     </div>
                     <div class="addresses">
-                        <span><img width="25" src="{{asset('/image/frontend/siderbar_myorders.png')}}"><a href="/order/orders-view">我的订单</a></span>
+                        <span><img width="25" src="{{asset('/image/frontend/siderbar_myorders.png')}}"><a href="/order">我的订单</a></span>
                     </div>
                 </div>
             </div>

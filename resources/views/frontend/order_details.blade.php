@@ -103,7 +103,7 @@
 
     <header data-am-widget="header" class="am-header am-header-fixed">
         <div class="am-header-left am-header-nav">
-            <a id="back" href="/order/orders-view" >
+            <a id="back" href="/order" >
                 <img src="{{asset('/image/frontend/orderconfirm_left_yellow_arrow.png')}}">
             </a>
 
@@ -187,7 +187,7 @@
 
         </div>
 
-        @if($orderinfo['status'] < 4)
+        @if($orderinfo['status'] != xesc\Order::STATUS_FINISHED)
         <!-- 底栏 -->
         <div data-am-widget="navbar" class="am-navbar am-cf " id="" style="z-index: 1009">
             <div class="am-navbar-nav am-cf am-avg-sm-4" style="height: 49px;padding: 0px;overflow: visible">
