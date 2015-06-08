@@ -80,7 +80,7 @@ class RecvAddrController extends Controller {
         $user=$request->session()->get('user');
         $addr->user_id=$user->id;
         $addrs_amount=$user->recvAddrs()->count();
-        $addr->is_default = !$request->input('chooseAddr') || $addrs_amount ? true : false;
+        $addr->is_default = $request->input('chooseAddr') || !$addrs_amount ? true : false;
         if($addr->save())
         {
            if ($request->input('chooseAddr')) {
