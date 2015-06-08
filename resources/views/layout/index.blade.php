@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable = 0">
+    <meta name="crsf-token" content="{{csrf_token()}}"/>
     <title>小二上菜</title>
 
     <!-- CSS -->
@@ -28,7 +29,13 @@
     </style>
 </head>
 <body>
-
+<script>
+	$.ajaxSetup({
+	    headers:{
+	    'X-CSRF-TOKEN':$('meta[name="csrf-token]').attr('content')
+	    }
+	})
+	</script>
 @yield('header')
 @yield('content')
 @yield('bottombar')

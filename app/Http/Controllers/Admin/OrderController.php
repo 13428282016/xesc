@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         //
         $rows=10;
-        $args = $request->only(['type']);
+        $args = $request->input('type',Order::STATUS_SUBMITTED);
 
         if(!in_array($args['type'],[Order::STATUS_SUBMITTED,Order::STATUS_DOING,Order::STATUS_SHIPPING,Order::STATUS_FINISHED,Order::STATUS_CANCEL,Order::STATUS_ALL]))
         {
@@ -117,7 +117,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_DOING;
         if($order->save())
         {
-            return ["success"=>true];
+            return response()->json(["success"=>true]);
         }
 
     }
@@ -129,7 +129,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_SHIPPING;
         if($order->save())
         {
-            return ["success"=>true];
+            return response()->json( ["success"=>true]);
         }
     }
 
@@ -140,7 +140,7 @@ class OrderController extends Controller
         $order->status = Order::STATUS_CANCEL;
         if($order->save())
         {
-            return ["success"=>true];
+            return response()->json(["success"=>true]);
         }
     }
 
