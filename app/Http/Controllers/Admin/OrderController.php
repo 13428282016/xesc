@@ -18,11 +18,11 @@ class OrderController extends Controller
     {
         //
         $rows=10;
-        $args = $request->input('type',Order::STATUS_SUBMITTED);
+        $args['type'] = $request->input('type',Order::STATUS_DOING);
 
         if(!in_array($args['type'],[Order::STATUS_SUBMITTED,Order::STATUS_DOING,Order::STATUS_SHIPPING,Order::STATUS_FINISHED,Order::STATUS_CANCEL,Order::STATUS_ALL]))
         {
-            $args['type'] = Order::STATUS_SUBMITTED;
+            $args['type'] = Order::STATUS_DOING;
         }
         if($args['type']==Order::STATUS_ALL)
         {

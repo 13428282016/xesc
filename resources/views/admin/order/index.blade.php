@@ -27,6 +27,11 @@ div#orders .order  .status{
 div#orders .order  .summary{
 color: red;
 }
+div#orders .order .recv_info label
+{
+  display: inline-block;
+  width: 120px;
+}
 div#orders .order .right li{
 list-style: none;
 float: left;
@@ -90,6 +95,15 @@ div#orders .order .operation
           </div>
 
           <div class="panel-body">
+
+             <ul class="recv_info">
+             <li><label>收货人：</label><span>{{$order->recv_name}}</span></li>
+             <li><label>收货地址:</label><span>{{$order->recv_address}}</span></li>
+             <li><label>收货人性别：</label><span>@if($order->recv_sex==\xesc\RecvAddr::SEX_MAN)男@else 女 @endif</span></li>
+             <li><label>联系电话：</label><span>{{$order->recv_cellphone}}</span></li>
+             <li><label>备注:</label><span>{{$order->remark}}</span></li>
+
+             </ul>
 
           </div>
 
