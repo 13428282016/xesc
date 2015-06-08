@@ -66,7 +66,7 @@ class CartController extends Controller {
     public function getIndex(Request $request)
     {
         $user=$request->session()->get('user');
-            $dishes= $user->cart->dishes;
+        $dishes= $user->cart->dishes;
         return view('cart/index',['dishes'=>$dishes]);
     }
 

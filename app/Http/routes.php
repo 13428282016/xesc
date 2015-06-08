@@ -22,41 +22,39 @@
 
 Route::controllers([
 	'order'=> 'OrderController',
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
     'admin/auth'=>'Admin\AuthController',
-    'cart'=>'ucenter\CartController',
-	'address' => 'ucenter\RecvAddrController'
+
 ]);
+Route::get('/','IndexController@index');
 
 
-
-Route::group(['middleware'=>'admin'],function(){
+Route::group(['prefix'=>'admin','middleware'=>'admin','namespace'=>'Admin'],function(){
     Route::resources([
-            'admin/dishes'=>'Admin\DishesController',
-            'admin/order'=>'Admin\OrderController',
-            'admin/user'=>'Admin\UserController'
+            'dishes'=>'DishesController',
+            'order'=>'OrderController',
+            'user'=>'UserController'
         ]
     );
-    Route::get('admin','Admin\HomeController@index');
+    Route::get('/','HomeController@index');
     Route::controllers([
-        'admin/order'=>'Admin\OrderController'
+        'order'=>'OrderController'
         ]);
 
 });
 
-Route::group(['middleware'=>'openID'],function(){
+Route::group(['middleware'=>'openID','namespace'=>'ucenter'],function(){
+
     Route::resources([
 
-            'recvaddr'=>'ucenter\RecvAddrController',
-            'order'=>'ucenter\OrderController',
+            'recvaddr'=>'RecvAddrController',
+            'order'=>'OrderController',
 
         ]
     );
     Route::controllers([
-       'order'=>'ucenter\OrderController',
-        'cart'=>'ucenter\CartController',
-        '/' => 'IndexController'
+       'order'=>'OrderController',
+        'cart'=>'CartController',
+
     ]);
 
 });

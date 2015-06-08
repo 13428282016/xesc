@@ -32,7 +32,7 @@ class IndexController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function getIndex(Request $request)
+	public function index(Request $request)
 	{
 		$dishes = Dishes::all()->toArray();
 

@@ -19,32 +19,20 @@ class OrderController extends Controller
         //
         $rows=10;
         $args = $request->only(['type']);
-        switch ($args['type']) {
-            case Order::STATUS_SUBMITTED:
-                $orders = Order::where('status', Order::STATUS_SUBMITTED)->paginate($rows);
 
-                break;
-            case Order::STATUS_DOING:
-                $orders = Order::where('status', Order::STATUS_DOING)->paginate($rows);
-                break;
-            case Order::STATUS_SHIPPING:
-                $orders = Order::where('status', Order::STATUS_SHIPPING)->paginate($rows);
-                break;
-            case Order::STATUS_FINISHED:
-                $orders = Order::where('status', Order::STATUS_FINISHED)->paginate($rows);
-                break;
-            case Order::STATUS_CANCEL:
-                $orders = Order::where('status', Order::STATUS_CANCEL)->paginate($rows);
-                break;
-            case Order::STATUS_ALL:
-                $orders = Order::paginate($rows);
-                break;
-            default:
-                $args['type'] = Order::STATUS_SUBMITTED;
-                $orders = Order::where('status', Order::STATUS_SUBMITTED)->paginate($rows);
-
-
+        if(!in_array($args['type'],[Order::STATUS_SUBMITTED,Order::STATUS_DOING,Order::STATUS_SHIPPING,Order::STATUS_FINISHED,Order::STATUS_CANCEL,Order::STATUS_ALL]))
+        {
+            $args['type'] = Order::STATUS_SUBMITTED;
         }
+        if($args['type']==Order::STATUS_ALL)
+        {
+            $orders = Order::orderBy('created_at','desc')->paginate($rows);
+        }
+        else
+        {
+            $orders = Order::where('status',  $args['type'])->orderBy('created_at','desc')->paginate($rows);
+        }
+
         $ordersAmount[Order::STATUS_SUBMITTED] = Order::where('status', Order::STATUS_SUBMITTED)->count();
         $ordersAmount[Order::STATUS_DOING] = Order::where('status', Order::STATUS_DOING)->count();
         $ordersAmount[Order::STATUS_SHIPPING] = Order::where('status', Order::STATUS_SHIPPING)->count();
@@ -84,7 +72,7 @@ class OrderController extends Controller
     public function show($id)
     {
         //
-        $order = Order::find($id);
+        $order = Order::findOrFail($id);
         return view('', ['order', $order]);
     }
 
@@ -125,7 +113,7 @@ class OrderController extends Controller
     public function  postDo(Request $request)
     {
         $args = $request->only('id');
-        $order = Order::find($args['id']);
+        $order = Order::findOrFail($args['id']);
         $order->status = Order::STATUS_DOING;
         if($order->save())
         {
@@ -137,7 +125,7 @@ class OrderController extends Controller
     public function postShip(Request $request)
     {
         $args = $request->only('id');
-        $order = Order::find($args['id']);
+        $order = Order::findOrFail($args['id']);
         $order->status = Order::STATUS_SHIPPING;
         if($order->save())
         {
@@ -148,7 +136,7 @@ class OrderController extends Controller
     public function postCancel(Request $request)
     {
         $args = $request->only('id');
-        $order = Order::find($args['id']);
+        $order = Order::findOrFail($args['id']);
         $order->status = Order::STATUS_CANCEL;
         if($order->save())
         {

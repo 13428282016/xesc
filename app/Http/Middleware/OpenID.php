@@ -39,7 +39,7 @@ class OpenID {
          }
         else
         {
-           $user=User::find($user->id);
+           $user=User::findOrFail($user->id);
         }
         $request->session()->put('user',$user);
 

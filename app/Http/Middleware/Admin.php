@@ -14,10 +14,14 @@ class Admin {
 	public function handle($request, Closure $next)
 	{
 
-        if(!$request->session()->get('admin'))
+        $admin=$request->session()->get('admin');
+
+        if(!$admin)
         {
             return redirect('admin/auth/login');
         }
+        $admin=\xesc\Admin::findOrFail($admin->id);
+        $request->session()->set('admin',$admin);
 		return $next($request);
 	}
 

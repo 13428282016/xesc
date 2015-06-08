@@ -47,7 +47,7 @@ class AuthController extends Controller {
 
         $admin=$request->only(['account','password']);
 
-        if($this->check($admin))
+        if($admin=$this->check($admin))
         {
             $this->login($admin);
             return redirect('admin');
@@ -74,21 +74,22 @@ class AuthController extends Controller {
         {
             return true;
         }
-        $admin=Admin::where('account',$admin['account'])->where('password',$admin['password'])->get();
-        if($admin->isEmpty())
+        $admin=Admin::where('account',$admin['account'])->where('password',$admin['password'])->get()->first();
+        if(!$admin)
         {
             return false;
         }
         else
         {
-            $this->session->set('admin',$admin->first());
-            return true;
+
+            return $admin;
         }
 
     }
     function isLogin()
     {
-        if($this->session->get('admin'))
+        $admin=$this->session->get('admin');
+        if($admin)
         {
             return true;
         }

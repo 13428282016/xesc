@@ -71,7 +71,7 @@ class DishesController extends Controller {
 	{
 		//
 
-        return view('admin.dishes.show')->with('dishes',Dishes::find($id));
+        return view('admin.dishes.show')->with('dishes',Dishes::findOrFail($id));
 
 	}
 
@@ -84,7 +84,7 @@ class DishesController extends Controller {
 	public function edit($id)
 	{
 		//
-        return view('admin.dishes.edit')->with('dishes',Dishes::find($id));
+        return view('admin.dishes.edit')->with('dishes',Dishes::findOrFail($id));
 
 	}
 
@@ -98,7 +98,7 @@ class DishesController extends Controller {
 	{
 		//
 
-        $dishes=Dishes::find($id);
+        $dishes=Dishes::findOrFail($id);
         $dishes->name=Input::get('name');
         $dishes->image=Input::get('image');
         $dishes->desc=Input::get('desc');
@@ -123,7 +123,7 @@ class DishesController extends Controller {
 	public function destroy($id)
 	{
 		//
-        $dishes=Dishes::find($id);
+        $dishes=Dishes::findOrFail($id);
          if($dishes->delete())
          {
              return redirect('admin/dishes');
