@@ -32,6 +32,11 @@
 
     </div>
 
+    <div style="text-align: center">
+
+    <?php echo $dishes->render()?>
+    </div>
+
 
 </div>
 <script>

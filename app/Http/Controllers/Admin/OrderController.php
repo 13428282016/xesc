@@ -17,30 +17,31 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         //
+        $rows=10;
         $args = $request->only(['type']);
         switch ($args['type']) {
             case Order::STATUS_SUBMITTED:
-                $orders = Order::where('status', Order::STATUS_SUBMITTED)->get();
+                $orders = Order::where('status', Order::STATUS_SUBMITTED)->paginate($rows);
 
                 break;
             case Order::STATUS_DOING:
-                $orders = Order::where('status', Order::STATUS_DOING)->get();
+                $orders = Order::where('status', Order::STATUS_DOING)->paginate($rows);
                 break;
             case Order::STATUS_SHIPPING:
-                $orders = Order::where('status', Order::STATUS_SHIPPING)->get();
+                $orders = Order::where('status', Order::STATUS_SHIPPING)->paginate($rows);
                 break;
             case Order::STATUS_FINISHED:
-                $orders = Order::where('status', Order::STATUS_FINISHED)->get();
+                $orders = Order::where('status', Order::STATUS_FINISHED)->paginate($rows);
                 break;
             case Order::STATUS_CANCEL:
-                $orders = Order::where('status', Order::STATUS_CANCEL)->get();
+                $orders = Order::where('status', Order::STATUS_CANCEL)->paginate($rows);
                 break;
             case Order::STATUS_ALL:
-                $orders = Order::all();
+                $orders = Order::paginate($rows);
                 break;
             default:
                 $args['type'] = Order::STATUS_SUBMITTED;
-                $orders = Order::where('status', Order::STATUS_SUBMITTED)->get();
+                $orders = Order::where('status', Order::STATUS_SUBMITTED)->paginate($rows);
 
 
         }
@@ -50,6 +51,7 @@ class OrderController extends Controller
         $ordersAmount[Order::STATUS_FINISHED] = Order::where('status', Order::STATUS_FINISHED)->count();
         $ordersAmount[Order::STATUS_CANCEL] = Order::where('status', Order::STATUS_CANCEL)->count();
         $ordersAmount[Order::STATUS_ALL] = Order::count();
+        $orders->addQuery('type',$args['type']);
         return view('admin.order.index', ['orders' => $orders, 'ordersAmount' => $ordersAmount, 'type' => $args['type']]);
     }
 

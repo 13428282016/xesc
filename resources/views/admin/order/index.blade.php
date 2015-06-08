@@ -124,6 +124,11 @@ div#orders .order .operation
         @endforeach
   </div>
 
+<div style="text-align: center">
+   <?php echo  $orders->render()?>
+</div>
+
+
 
 </div>
 <script>

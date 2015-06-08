@@ -19,7 +19,9 @@ class DishesController extends Controller {
 	public function index()
 	{
 		//
-        return view('admin.dishes.index')->with('dishes',Dishes::all());
+        $rows=10;
+        $dishes=Dishes::paginate($rows);
+        return view('admin.dishes.index')->with('dishes',$dishes);
 	}
 
 	/**

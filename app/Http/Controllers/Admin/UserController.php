@@ -4,6 +4,7 @@ use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use xesc\User;
 
 class UserController extends Controller {
 
@@ -15,8 +16,9 @@ class UserController extends Controller {
 	public function index()
 	{
 		//
-       $users= User::all();
-        return view('',['users'=>$users]);
+        $rows=10;
+        $users= User::paginate($rows);
+        return view('admin.user.index',['users'=>$users]);
 	}
 
 	/**
