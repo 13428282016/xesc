@@ -3,6 +3,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">美食列表</div>
     <div class="panel-body">
+    <a href="{{url('admin/dishes/create')}}" target="_blank" class="btn btn-primary">添加美食</a>
     <table id="dishes" class="table table-hover">
     <thead>
     <th>美食名</th>
