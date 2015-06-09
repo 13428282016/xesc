@@ -280,32 +280,7 @@
     </div>
     </form>
     <!-- 底栏 -->
-    {{--<form method="post" id="make_order_form" action="/order/make_order" style="">--}}
-        {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
-        {{--<input id="carts_data" type="hidden" name="carts_data" value="{{json_encode($carts_data)}}">--}}
-        {{--<div class="am-g details">--}}
 
-            {{--<div class="am-g">--}}
-                {{--<input type="text" name="address" class="am-form-field am-radius" placeholder="地址" />--}}
-            {{--</div>--}}
-            {{--<div class="am-g">--}}
-                {{--<input type="text" name="phone"   class="am-form-field am-radius" placeholder="手机/电话号码" />--}}
-            {{--</div>--}}
-            {{--<div class="am-g">--}}
-                {{--<input type="text" name="remark"  class="am-form-field am-radius" placeholder="备注" />--}}
-            {{--</div>--}}
-
-            {{--<div class="am-g">--}}
-                {{--<input type="hidden" name="pay_type" value="1">--}}
-                {{--<div class="am-form-field  payment-ways">餐到付款</div>--}}
-            {{--</div>--}}
-
-        {{--</div>--}}
-
-        {{--<div class="make-order-btn">--}}
-            {{--<button id="make_order" type="submit" class="am-btn am-btn-secondary am-btn-block">立即下单</button>--}}
-        {{--</div>--}}
-    {{--</form>--}}
     <div class="am-modal am-modal-alert" tabindex="-1" id="no-address-alert">
         <div class="am-modal-dialog">
             <div class="am-modal-bd">

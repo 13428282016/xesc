@@ -72,7 +72,8 @@ class RecvAddrController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-            
+
+        echo "add";die;
         $formData=$request->only(['address','cellphone','name']);
 
         $checkAddr = RecvAddr::where('address','=',$formData['address'])->get();
@@ -90,7 +91,7 @@ class RecvAddrController extends Controller {
         {
            if ($request->input('chooseAddr')) {
 
-             return Redirect::to('order/confirm-order-view');
+             return Redirect::to('order/create');
            } else {
 
              return Redirect::to('recvaddr');
@@ -163,16 +164,9 @@ class RecvAddrController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
         $addr=RecvAddr::find($id);
-        if($addr->delete())
-        {
-            return Redirect::to('recvaddr');
-        }
-        else
-        {
-
-        }
+        $addr->delete();
+        return Redirect::to('recvaddr');
 	}
 
 }

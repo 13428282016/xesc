@@ -86,19 +86,8 @@
         }
 
 
-        /* 弹出确认框 */
-        .am-modal-hd {
-            padding: 15px 10px 15px;
-            font-size: 1.8rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
+ 
 
-        #confirm_recv .am-modal-dialog {
-            -webkit-border-radius: 15px;
-            -moz-border-radius: 15px;
-            border-radius: 15px;
-        }
-        
     </style>
 
     <header data-am-widget="header" class="am-header am-header-fixed">

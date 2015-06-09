@@ -84,7 +84,15 @@
 
         .operate-btn nobr {
             position: relative;
+            right: 0px;
             /*right: 100%;*/
+            -webkit-transition: all 0.4s;
+            -moz-transition: all 0.4s;
+            -ms-transition: all 0.4s;
+            -o-transition: all 0.4s;
+            transition: all 0.4s;
+
+
         }
 
         .operate-btn .edit {
@@ -122,6 +130,7 @@
 
 
     </style>
+
 
 
 <div class="am-container">
@@ -207,39 +216,73 @@
         </div>
         <!-- 底栏 -->
 
+        <div class="am-modal am-modal-confirm" tabindex="-1" id="confirm_delete">
+            <div class="am-modal-dialog">
+                <div class="am-modal-hd">想要删除这个地址?</div>
+                {{--<div class="am-modal-bd">--}}
+
+                {{--</div>--}}
+                <div class="am-modal-footer">
+                    <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                    <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+                </div>
+            </div>
+        </div>
+
+        <form id="delete_address" method="POST">
+
+            <input type="hidden" name="_method" value="delete">
+            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+
+        </form>
+
         <script src="{{asset('/js/lib/jquery/jquery.touchSwipe.min.js')}}"></script>
         <script>
 
             $(function() {
-                //Keep track of how many swipes
-                var count=0;
-                var if_showed = 0;
-                //Enable swiping...
-                $(".address").swipe( {
-                    //Generic swipe handler for all directions
-                    swipeLeft:function(event, direction, distance, duration, fingerCount) {
+                // 记录上一次显示了删除按钮的元素id,已便于点击显示其它删除按钮时，把之前显示了删除按钮的元素重置。
+                var last_delete_id = null;
 
-                        var id = $(this).data('id');
-                       if (!if_showed) {
-                            $('#'+id+' .operate-btn .edit').css({
-                                'width':0,
-                                'right':50
+                $('.operate-btn .delete').click(function() {
+                    $('#confirm_delete').modal({
+                        relatedTarget: this,
+                        onConfirm: function(options) {
+                            $('form#delete_address').attr('action','/recvaddr/'+last_delete_id);
+                            $('#delete_address').submit();
+                        },
+                        onCancel: function() {
+                        }
+                    });
+                });
+
+                //Enable swiping...
+                $("div.am-container #addresses>.address").swipe( {
+                    //Generic swipe handler for all directions
+                    swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+
+                        if (direction === 'left') {
+
+                            var id = $(this).data('id');
+                            $('#'+id+' .operate-btn nobr').css({
+                                'right':'100%'
                             });
-                       } else {
-                           $('.operate-btn .edit').css({
-                               'width':'auto',
-                               'right':0
-                           });
-                       }
+                            last_delete_id= id;
+
+                        } else if (direction === null) {
+
+                            $('#'+last_delete_id+' .operate-btn nobr').css({'right':'0px'});
+
+                        }
 
                     },
                     //Default is 75px, set to 0 for demo so any distance triggers swipe
                     threshold:0
                 });
+
             });
 
         </script>
-    @endif
+   @endif
 
 
 @endsection

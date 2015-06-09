@@ -3,7 +3,6 @@
 
 @section('content')
 <style>
-
         .am-container .addresses {
             background-color: #ffffff;
             -webkit-border-radius: 15px;
@@ -29,24 +28,18 @@
             line-height: 40px;
         }
 
-
-        .am-container .addresses label {
-
-        }
-
         .am-container .addresses input {
-
             border: 0px;
             -webkit-border-radius: 0px;
             -moz-border-radius: 0px;
             border-radius: 0px;
+            width: 70%;
         }
 
         .am-container .addresses .name {
             border-bottom: 1px solid #d2d2d2;
             padding-left: 23px;
             width: 79%;
-
         }
         .addresses .sex {
             /*padding-left: 70px;*/
@@ -70,11 +63,9 @@
         .am-navbar .am-navbar-nav .am-btn {
             color: #ffffff;
         }
-
 </style>
 
  <!-- 添加地址框 -->
-
 
     <form method="POST"  action="/recvaddr" >
     <div class="am-container">
