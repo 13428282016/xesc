@@ -1,5 +1,8 @@
 <?php namespace xesc\Services;
 
+
+use Symfony\Component\HttpFoundation\Request;
+use xesc\Admin;
 use xesc\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
@@ -14,11 +17,24 @@ class Registrar implements RegistrarContract {
 	 */
 	public function validator(array $data)
 	{
-		return Validator::make($data, [
-			'name' => 'required|max:255',
-			'email' => 'required|email|max:255|unique:users',
-			'password' => 'required|confirmed|min:6',
-		]);
+        $rules=[
+            'name'=>'required|max:16|min:3|unique:admins',
+            'password'=>'required|max:16|min:6|confirmed',
+            'password_confirmation'=>'required'
+        ];
+
+        if(strpos($data['emailOrCellphone'],'@')==-1)
+        {
+            $rules['emailOrCellphone']='required|regex:/^1[0-9]{10}$/';
+
+        }
+        else
+        {
+            $rules['emailOrCellphone']='required|email';
+
+        }
+
+		return Validator::make($data,$rules);
 	}
 
 	/**
@@ -29,10 +45,22 @@ class Registrar implements RegistrarContract {
 	 */
 	public function create(array $data)
 	{
-		return User::create([
+        if(strpos($data['emailOrCellphone'],'@')==-1) {
+            $data['cellphone']=$data['emailOrCellphone'];
+            $data['email']=null;
+        }
+        else
+        {
+            $data['email']=$data['emailOrCellphone'];
+            $data['cellphone']=null;
+        }
+		return Admin::create([
 			'name' => $data['name'],
 			'email' => $data['email'],
+            'cellphone'=>$data['cellphone'],
 			'password' => bcrypt($data['password']),
+            'account'=>$data['emailOrCellphone']
+
 		]);
 	}
 

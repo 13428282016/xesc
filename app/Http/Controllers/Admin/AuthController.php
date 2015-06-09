@@ -1,127 +1,38 @@
-<?php namespace xesc\Http\Controllers\admin;
+<?php namespace xesc\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\View;
-use xesc\Admin;
-use xesc\Http\Requests;
 use xesc\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Contracts\Auth\Registrar;
+use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class AuthController extends Controller {
 
+	/*
+	|--------------------------------------------------------------------------
+	| Registration & Login Controller
+	|--------------------------------------------------------------------------
+	|
+	| This controller handles the registration of new users, as well as the
+	| authentication of existing users. By default, this controller uses
+	| a simple trait to add these behaviors. Why don't you explore it?
+	|
+	*/
 
-    /*
-     * 后台管理员模型
-     *
-     * @var $auth
-     */
-    protected $auth;
+	use AuthenticatesAndRegistersUsers;
 
-    protected $session;
+	/**
+	 * Create a new authentication controller instance.
+	 *
+	 * @param  \Illuminate\Contracts\Auth\Guard  $auth
+	 * @param  \Illuminate\Contracts\Auth\Registrar  $registrar
+	 * @return void
+	 */
+	public function __construct(Guard $auth, Registrar $registrar)
+	{
+		$this->auth = $auth;
+		$this->registrar = $registrar;
 
-    /*
-     *
-     * 登录页面
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getLogin()
-    {
-        if($this->isLogin())
-        {
-            return redirect('admin');
-        }
-
-        return View('admin.auth.login');
-    }
-
-    public  function  postLogin(Request $request)
-    {
-
-        $this->validate($request,[
-            'account'=>'required',
-            'password'=>'required'
-        ]);
-
-        $admin=$request->only(['account','password']);
-
-        if($admin=$this->check($admin))
-        {
-            $this->login($admin);
-            return redirect('admin');
-        }
-        else
-        {
-            return redirect('admin/auth/login')->withErrors(['auth'=>'用户名或密码错误'])->withInput($request->only('account'));
-        }
-
-
-
-    }
-
-    function  login($admin)
-    {
-        $this->session->set('admin',$admin);
-
-    }
-
-    function  check($admin)
-    {
-
-        if($this->isLogin())
-        {
-            return true;
-        }
-        $admin=Admin::where('account',$admin['account'])->where('password',$admin['password'])->get()->first();
-        if(!$admin)
-        {
-            return false;
-        }
-        else
-        {
-
-            return $admin;
-        }
-
-    }
-    function isLogin()
-    {
-        $admin=$this->session->get('admin');
-        if($admin)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public function getLogout(SessionInterface $session)
-    {
-        $this->logout($session);
-        return redirect('admin/auth/login');
-    }
-
-    function logout()
-    {
-        $this->session->remove('admin');
-
-    }
-
-    public function __construct(SessionInterface $session)
-    {
-        $this->session=$session;
-
-    }
-
-
-
-
-
-
-
-
+		$this->middleware('guest', ['except' => 'getLogout']);
+	}
 
 }
