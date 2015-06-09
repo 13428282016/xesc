@@ -2,7 +2,9 @@
 @extends('admin/layout')
 
 @section('content')
-
+<script src="{{asset('/js/lib/jquery.iframe-transport/jquery.iframe-transport.js')}}"></script>
+<script src="{{asset('/js/lib/imageUpload/image_upload.js')}}"></script>
+<link href="{{asset('/js/lib/imageUpload/css/image_upload.css')}}" rel="stylesheet">
 <div class="panel panel-default">
   <div class="panel-heading">添加美食</div>
   <div class="panel-body">
@@ -38,7 +40,7 @@
   </div>
     <div class="form-group">
       <label for="image">商品图片</label>
-      <input  type="file"  name="image" >
+      <button id="upload" type="button" class="btn btn-success">上传照片</button>
     </div>
   <div class="form-group">
     <label for="desc">描述</label>
@@ -50,7 +52,10 @@
 </form>
   </div>
 </div>
+<script>
 
+$('#upload').imageUpload('imageUpload',{initType:'single',name:'image', maxByte:1024*1024*4,url:"/upload/dishes",suffixs:['png','jpg','jpeg']});
+</script>
 
 
 @endsection

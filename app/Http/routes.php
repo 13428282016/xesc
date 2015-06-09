@@ -22,6 +22,7 @@
 
 Route::controllers([
     'admin/auth'=>'Admin\AuthController',
+    'upload'=>'UploadController'
 
 ]);
 Route::get('/', ['middleware' => 'openID','uses'=>'IndexController@index']);
