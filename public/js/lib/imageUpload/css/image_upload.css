@@ -1,0 +1,9 @@
+.upload-imgs .close{  display: none; position: absolute;width: 18px;height: 18px;background: url("../image/close.png"); right:-9px;top: -9px;}
+
+.upload-imgs  .close:hover{cursor: pointer}
+.upload-imgs .img {  margin-bottom: 10px;display: inline-block;position: relative;margin-right: 20px; vertical-align: middle; }
+
+.upload-imgs img:hover{outline: 1px solid rgb(0,158,154);}
+.upload-imgs {display: inline;vertical-align: middle;}
+
+.upload-image-btn{vertical-align: middle;margin-left: 10px;}
